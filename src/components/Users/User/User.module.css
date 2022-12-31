@@ -1,0 +1,55 @@
+.userPhoto {
+  border-radius: 50%;
+  width: 60px;
+}
+
+.userContainer {
+  position: relative;
+  display: flex;
+  /* gap: 150px; */
+}
+
+.nameAndAva {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.info {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+.status {
+  color: #81b441;
+}
+
+.userName {
+  color: #bd0000;
+  font-size: 30px;
+}
+
+.followBtn {
+  background: #81b441;
+}
+
+.unfollowBtn {
+  background: #700000eb;
+  
+}
+
+.btn {
+  position: absolute;
+  left: 400px;
+  top: 20px;
+  padding: 8px 20px;
+  border: 1px solid #262626;
+  cursor: pointer;
+  width: 100px;
+  color: #ffffff;
+}
+
+.btn:disabled {
+  cursor: default;
+  filter: brightness(0.5);
+}

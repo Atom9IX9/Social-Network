@@ -1,0 +1,25 @@
+.form {
+  position: fixed;
+  top: 700px;
+  left: 60%;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.form button {
+  padding: 12px 30px 12px 30px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #262626;
+  color: #81b441;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+.form button:hover {
+  transform: scale(1.1);
+  background: #262626;
+  color: #81b441;
+}

@@ -1,0 +1,23 @@
+.item {
+  margin: 20px 0px 20px 0px;
+  color: red;
+}
+
+.likeBlock {
+  color: green;
+}
+
+.text::content {
+  width: 100%;
+  height: auto;
+}
+
+.text {
+  margin-bottom: 20px;
+}
+
+.item img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}

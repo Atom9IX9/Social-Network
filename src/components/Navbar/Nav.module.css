@@ -1,0 +1,26 @@
+.nav {
+  position: relative;
+  grid-area: n;
+  background-color: #262626;
+  padding: 10px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.friends {
+  margin-top: 50px;
+}
+
+.friends h3 {
+  text-align: center;
+  color: #81b441;
+}
+
+.friendsList {
+  display: flex;
+  gap: 10px;
+}

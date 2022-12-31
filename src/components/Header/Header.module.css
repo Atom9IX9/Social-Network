@@ -1,0 +1,30 @@
+.header {
+  grid-area: h;
+  width: 95.2%;
+  background-color: #262626;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header img {
+  height: 100%;
+  width: 73.5px;
+}
+
+.authProfile {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 20px;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.authProfile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.login {
+  color: #81b441;
+}

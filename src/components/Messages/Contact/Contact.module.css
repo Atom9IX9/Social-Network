@@ -1,0 +1,39 @@
+.contact a {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.contact a {
+  text-decoration: none;
+}
+
+.contact a .name {
+  color: #262626;
+  line-height: 40px;
+}
+
+.contact a.active .name {
+  text-decoration: underline;
+  color: blue;
+}
+
+.contact a .avatarWraper {
+  display: inline;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  line-height: 65px;
+  text-align: center;
+}
+
+.contact a.active .avatarWraper {
+  background: #80b4417f;
+  scale: 1.25;
+  transition: all 500ms;
+}
+
+.contact img {
+  width: 30px;
+  border-radius: 50%;
+}

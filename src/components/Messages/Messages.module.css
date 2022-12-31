@@ -1,0 +1,47 @@
+.messagesPage {
+  margin-left: 0px;
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+}
+
+.contacts {
+  padding: 15px 60px 0px 70px;
+  width: 110%;
+}
+
+.messagesItems {
+  margin-right: 10px;
+  z-index: 1;
+}
+
+.contactMessage {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #81b441;
+  border-radius: 15px 15px 0px 15px;
+  width: 500px;
+  color: #262626;
+  background: #80b4416c;
+}
+
+.myMessage {
+  position: relative;
+  left: 300px;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #81b441;
+  border-radius: 15px 15px 15px 0px;
+  width: 500px;
+  color: #262626;
+  background: #80b441c0;
+  z-index: 0;
+}
+
+.messagesElements {
+  padding: 10px;
+  height: 850px;
+  background: #e4e4e4;
+  overflow-y: scroll;
+  border-left: 1px solid #262626;
+  border-radius: 10px;
+}

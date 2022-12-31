@@ -1,0 +1,43 @@
+input:not(.checkbox) {
+  margin-bottom: 20px;
+  margin-top: 10px;
+  height: 30px;
+}
+
+label {
+  font-weight: 500;
+  color: #700000;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.box {
+  margin-top: 15px;
+}
+
+.loginBtn {
+  margin-top: 20px;
+  background: #81b441;
+  cursor: pointer;
+  border: 0;
+  padding: 8px 20px;
+  color: #262626;
+  font-weight: 600;
+  transition: all 300ms;
+}
+
+.loginBtn:hover {
+  margin-left: 10px;
+  background: #262626;
+  color: #81b441;
+  scale: 1.2;
+}
+
+.formDataError {
+  color: red;
+  padding: 5px;
+}

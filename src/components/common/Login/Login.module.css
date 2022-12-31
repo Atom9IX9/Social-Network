@@ -1,0 +1,19 @@
+.loginPage {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+  width: 200px;
+  height: 700px;
+}
+
+.loginPage h1 {
+  text-align: center;
+  color: #262626;
+}
+
+.loginWrap {
+  margin-top: 30px;
+  background: #d7d7d7;
+  padding: 20px 100px;
+  border-radius: 40px;
+}

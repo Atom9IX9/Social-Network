@@ -1,0 +1,14 @@
+.unactivePage {
+  color: #006071a3;
+  font-size: 30px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.activePage {
+  color: #004971;
+  text-decoration: underline;
+  font-size: 30px;
+  margin: 10px;
+  cursor: pointer;
+}

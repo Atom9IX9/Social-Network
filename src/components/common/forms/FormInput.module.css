@@ -1,0 +1,21 @@
+.input {
+  padding: 5px;
+}
+
+.inputValidated {
+  border: 2px solid red;
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.errorText {
+  color: red;
+  font-weight: 600;
+}
+
+.input {
+  width: 400px;
+  height: 30px;
+  border-radius: 20px; 
+}
+
