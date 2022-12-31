@@ -1,6 +1,5 @@
 import s from "./ProfileInfo.module.css";
 import Preloader from "../../common/Preloader/Preloader";
-import ProfileDescription from "./ProfileDescription/ProfileDescription";
 import ProfileDescriptionWithHooks from "./ProfileDescription/ProfileDescriptionWithHooks";
 
 const ProfileInfo = (props) => {
