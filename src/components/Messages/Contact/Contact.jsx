@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import s from "./Contact.module.css";
-import userPhoto from "../../../assets/img/2e2e2125ee53807c2d77b34773f84b5c.jpg";
+import userPhoto from "../../../assets/img/defaultUserAv.jpg";
 
 const Contact = (props) => {
   const path = `${props.contactId}`;

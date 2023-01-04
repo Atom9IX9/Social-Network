@@ -1,10 +1,12 @@
 import s from "./Post.module.css";
+import userPhoto from "../../../../assets/img/defaultUserAv.jpg";
+
 
 const Post = (props) => {
   return (
     <div className={s.item}>
       <img
-        src="https://i.pinimg.com/736x/2e/2e/21/2e2e2125ee53807c2d77b34773f84b5c.jpg"
+        src={userPhoto}
         alt="start user avatar"
       />
       <div className={s.text}> {props.text} </div>

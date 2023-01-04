@@ -44,6 +44,15 @@ export const profileAPI = {
       .put("profile/status", { status: status })
       .then((response) => response.data);
   },
+  saveAvatar: (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    return instance
+      .put("/profile/photo", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => response.data);
+  },
 };
 
 export const authAPI = {
@@ -56,8 +65,6 @@ export const authAPI = {
       .then((response) => response.data);
   },
   logout: () => {
-    return instance
-      .delete("auth/login")
-      .then((response) => response.data)
-  }
+    return instance.delete("auth/login").then((response) => response.data);
+  },
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./ProfileDescription.module.css";
-import userPhoto from "../../../../assets/img/2e2e2125ee53807c2d77b34773f84b5c.jpg";
+import userPhoto from "../../../../assets/img/defaultUserAv.jpg";
 
 class ProfileDescription extends React.Component {
   state = {

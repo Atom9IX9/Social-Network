@@ -1,7 +1,7 @@
 import s from "./Header.module.css";
 import Logo from "../../assets/img/logo.jpg";
 import { NavLink } from "react-router-dom";
-import UserAvatar from "../../assets/img/2e2e2125ee53807c2d77b34773f84b5c.jpg";
+import UserAvatar from "../../assets/img/defaultUserAv.jpg";
 
 const Header = (props) => {
   return (

@@ -1,4 +1,5 @@
 import s from "./Friend.module.css";
+import userPhoto from "../../../assets/img/defaultUserAv.jpg";
 
 const Friend = (props) => {
   let friendName = props.name;
@@ -6,7 +7,7 @@ const Friend = (props) => {
   return (
     <div className={s.friend}>
       <img
-        src="https://i.pinimg.com/736x/2e/2e/21/2e2e2125ee53807c2d77b34773f84b5c.jpg"
+        src={userPhoto}
         alt="avatar"
       />
       <div className={s.name}>{friendName}</div>

@@ -21,6 +21,8 @@ const ProfileInfo = (props) => {
         updateUserStatus={props.updateUserStatus}
         profile={props.profile}
         status={props.status}
+        isOwner={props.isOwner}
+        saveAvatar={props.saveAvatar}
       />
     </div>
   );

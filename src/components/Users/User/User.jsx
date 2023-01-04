@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import style from "./User.module.css";
-import defaultUserPhoto from "../../../assets/img/2e2e2125ee53807c2d77b34773f84b5c.jpg";
+import defaultUserPhoto from "../../../assets/img/defaultUserAv.jpg";
 
 const UserPhoto = ({ photos, userId }) => {
   return (

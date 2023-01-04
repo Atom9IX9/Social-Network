@@ -1,9 +1,10 @@
 import { reset } from "redux-form";
 import { profileAPI } from "../api/api";
 
-const ADD_POST = "ADD-POST";
-const SET_USER_PROFILE = "profile_SET_USER_PROFILE";
-const SET_STATUS = "SET_STATUS";
+const ADD_POST = "ADD-POST/PROFILE_REDUCER";
+const SET_USER_PROFILE = "profile_SET_USER_PROFILE/PROFILE_REDUCER";
+const SET_STATUS = "SET_STATUS/PROFILE_REDUCER";
+const SAVE_PHOTOS_SUCCESS = "SAVE_PHOTOS_SUCCESS/PROFILE_REDUCER";
 
 let initialState = {
   posts: [
@@ -47,6 +48,11 @@ let profileReducer = (state = initialState, action) => {
         ...state,
         status: action.status,
       };
+    case SAVE_PHOTOS_SUCCESS:
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos },
+      };
     default:
       return state;
   }
@@ -54,6 +60,11 @@ let profileReducer = (state = initialState, action) => {
 
 export const addPost = (text) => {
   return { type: ADD_POST, text };
+};
+
+const saveAvatarSuccess = (photos) => {
+
+  return { type: SAVE_PHOTOS_SUCCESS, photos };
 };
 
 export const addPostFromForm = (formData) => (dispatch) => {
@@ -94,6 +105,11 @@ export const updateUserStatus = (status) => async (dispatch) => {
   if (data.resultCode === 0) {
     dispatch(setStatus(status));
   }
+};
+
+export const saveAvatar = (file) => async (dispatch) => {
+  let data = await profileAPI.saveAvatar(file);
+  dispatch(saveAvatarSuccess(data.data.photos));
 };
 
 export default profileReducer;

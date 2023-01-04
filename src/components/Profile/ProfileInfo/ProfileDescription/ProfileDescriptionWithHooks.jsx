@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./ProfileDescription.module.css";
-import userPhoto from "../../../../assets/img/2e2e2125ee53807c2d77b34773f84b5c.jpg";
+import userPhoto from "../../../../assets/img/defaultUserAv.jpg";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -13,11 +13,19 @@ const ProfileDescriptionWithHooks = (props) => {
   }, [props.status]);
 
   let toggleEditMode = () => {
-    if (editMode) {
-      setEditMode(false);
-      props.updateUserStatus(status);
-    } else {
-      setEditMode(true);
+    if (props.isOwner) {
+      if (editMode) {
+        setEditMode(false);
+        props.updateUserStatus(status);
+      } else {
+        setEditMode(true);
+      }
+    }
+  };
+
+  let onFileSelected = (e) => {
+    if (e.target.files.length) {
+      props.saveAvatar(e.target.files[0])
     }
   };
 
@@ -35,6 +43,7 @@ const ProfileDescriptionWithHooks = (props) => {
         }
         alt="user avatar"
       />
+      {props.isOwner && <input type="file" onChange={onFileSelected} />}
       <div className={s.status}>
         {!editMode && (
           <div onClick={toggleEditMode}>
