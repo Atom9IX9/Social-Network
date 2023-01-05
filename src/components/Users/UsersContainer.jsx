@@ -6,6 +6,7 @@ import Preloader from "../common/Preloader/Preloader";
 import { compose } from "redux";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
 import {
+  getMyProfileId,
   getStateCurrentPage,
   getStateIsFetching,
   getStateIsFollowRequest,
@@ -42,6 +43,7 @@ class UsersContainerComponent extends React.Component {
             isFollowing={this.props.isFollowing}
             follow={this.props.follow}
             unfollow={this.props.unfollow}
+            ownerId={this.props.ownerId}
           />
         )}
       </>
@@ -57,6 +59,7 @@ let mapStateToProps = (state) => {
     currentPage: getStateCurrentPage(state),
     isFetching: getStateIsFetching(state),
     isFollowing: getStateIsFollowRequest(state),
+    ownerId: getMyProfileId(state)
   };
 };
 

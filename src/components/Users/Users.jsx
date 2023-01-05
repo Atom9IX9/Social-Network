@@ -12,18 +12,21 @@ const Users = ({
   pageSize,
   onPageChange,
   currentPage,
+  ownerId,
 }) => {
   let users = usersArray.map((u) => {
-    return (
-      <div className={s.usersPage} key={u.id}>
-        <User
-          user={u}
-          isFollowing={isFollowing}
-          unfollow={unfollow}
-          follow={follow}
-        />
-      </div>
-    );
+    if (u.id !== ownerId) {
+      return (
+        <div className={s.usersPage} key={u.id}>
+          <User
+            user={u}
+            isFollowing={isFollowing}
+            unfollow={unfollow}
+            follow={follow}
+          />
+        </div>
+      );
+    }
   });
   return (
     <>
