@@ -29,9 +29,6 @@ export const initialize = () => (dispatch) => {
   Promise.all([promise]).then(() => {
     dispatch(setInitializedSuccess())
   })
-  // ! You shouldn't use "setInitializedSuccess()" after Warning, but if you offline, you can!
-  // console.warn("You use the 'setInitializedSuccess()' out of Promise!!!")
-  // dispatch(setInitializedSuccess())
 }
 
 export default appReducer

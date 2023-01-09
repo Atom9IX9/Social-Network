@@ -10,29 +10,7 @@ const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 const TOGGLE_IS_FOLLOW_REQUEST = "TOGGLE_IS_FOLLOW_REQUEST";
 
 let initialState = {
-  users: [
-    // !Length must be 0!
-    // {
-    //   id: 1,
-    //   followed: true,
-    //   name: "test user",
-    //   status: "def",
-    //   photos: {
-    //     small: null,
-    //     large: null,
-    //   },
-    // },
-    // {
-    //   id: 2,
-    //   followed: false,
-    //   name: "test user",
-    //   status: "def",
-    //   photos: {
-    //     small: null,
-    //     large: null,
-    //   },
-    // },
-  ],
+  users: [],
   pageSize: 10,
   totalItemsCount: 0,
   currentPage: 1,
@@ -88,43 +66,48 @@ const usersReducer = (state = initialState, action) => {
   }
 };
 
-// * AC
 export let followSuccess = (userId) => {
   return {
     type: FOLLOW,
     userId,
   };
 };
+
 export let unfollowSuccess = (userId) => {
   return {
     type: UNFOLLOW,
     userId,
   };
 };
+
 export let setUsers = (users) => {
   return {
     type: SET_USERS,
     users,
   };
 };
+
 export let setCurrentPage = (page) => {
   return {
     type: SET_CURRENT_PAGE,
     page,
   };
 };
+
 export let setTotalUsersCount = (totalItemsCount) => {
   return {
     type: SET_TOTAL_USER_COUNT,
     totalItemsCount,
   };
 };
+
 export let toggleIsFetching = (isFetching) => {
   return {
     type: TOGGLE_IS_FETCHING,
     isFetching,
   };
 };
+
 export let toggleIsFollowing = (isFollowing, userId) => {
   return {
     type: TOGGLE_IS_FOLLOW_REQUEST,
@@ -133,18 +116,17 @@ export let toggleIsFollowing = (isFollowing, userId) => {
   };
 };
 
-// * THUNKS
 export let getUsers = (currentPage, pageSize) => async (dispatch) => {
   //console.warn("Pleas apdate values");
   dispatch(toggleIsFetching(true));
-  let data = await usersAPI.getUsers(currentPage, pageSize);//
+  let data = await usersAPI.getUsers(currentPage, pageSize); //
   dispatch(toggleIsFetching(false));
-  dispatch(setUsers(data.items));//
-  dispatch(setTotalUsersCount(data.totalCount));//
-  dispatch(setCurrentPage(currentPage));//
+  dispatch(setUsers(data.items)); //
+  dispatch(setTotalUsersCount(data.totalCount)); //
+  dispatch(setCurrentPage(currentPage)); //
 };
 
-const followUnfollowFlow = async (
+let followUnfollowFlow = async (
   dispatch,
   userId,
   apiMethod,
@@ -163,6 +145,7 @@ export let follow = (userId) => async (dispatch) => {
   let actionCreator = followSuccess;
   followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
 };
+
 export let unfollow = (userId) => async (dispatch) => {
   let apiMethod = usersAPI.unfollow.bind(usersAPI);
   let actionCreator = unfollowSuccess;

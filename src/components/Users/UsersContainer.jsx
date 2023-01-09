@@ -31,7 +31,6 @@ class UsersContainerComponent extends React.Component {
       <>
         {this.props.isFetching ? (
           <Preloader />
-          // <></>
         ) : (
           <Users
             totalItemsCount={this.props.totalItemsCount}

@@ -3,8 +3,19 @@ import s from "./ProfileDescription.module.css";
 import AboutUser from "./AboutUser/AboutUser";
 import UserPreview from "./UserPreview/UserPreview";
 import UserStatus from "./UserStatus/UserStatus";
+import { useState } from "react";
+import AboutUserForm from "./AboutUserForm";
 
 const ProfileDescriptionWithHooks = (props) => {
+  const [editMode, setEditMode] = useState(false);
+
+  const toggleEditMode = () => {
+    if (editMode) setEditMode(false);
+    else setEditMode(true);
+  };
+
+  const onSubmit = () => toggleEditMode(false);
+
   return (
     <div className={s.description}>
       <UserPreview
@@ -20,7 +31,15 @@ const ProfileDescriptionWithHooks = (props) => {
         isOwner={props.isOwner}
       />
 
-      <AboutUser profile={props.profile} />
+      {editMode ? (
+        <AboutUserForm onSubmit={onSubmit} />
+      ) : (
+        <AboutUser
+          profile={props.profile}
+          toggleEditMode={toggleEditMode}
+          isOwner={props.isOwner}
+        />
+      )}
     </div>
   );
 };

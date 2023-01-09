@@ -17,7 +17,7 @@ const UserPreview = ({ fullName, userProfilePhoto, isOwner, saveAvatar }) => {
         src={userProfilePhoto ? userProfilePhoto : userDefaultPhoto}
         alt="user avatar"
       />
-      {isOwner && <input type="file" onChange={onFileSelected} />}
+      {isOwner && <div><input type="file" onChange={onFileSelected} /></div>}
     </>
   );
 };

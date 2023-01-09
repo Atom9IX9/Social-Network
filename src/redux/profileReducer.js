@@ -14,17 +14,7 @@ let initialState = {
     { postId: 4, text: "How're you?", likes: 11 },
     { postId: 5, text: "It's my last post(", likes: 1 },
   ],
-  // ! in profile value must be ">null<" but this is a test in offline mode !
-  profile: null /*{
-    fullName: "user",
-    aboutMe: "",
-    photos: {
-      small: null,
-      large: null,
-    },
-    lookingForAJob: true,
-    lookingForAJobDescription: "front-end",
-  }*/,
+  profile: null,
   status: "",
 };
 

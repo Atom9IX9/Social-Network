@@ -7,38 +7,29 @@ import style from "./LoginForm.module.css";
 const LoginForm = ({ handleSubmit, error }) => (
   <form onSubmit={handleSubmit}>
     <label htmlFor="loginInputOfLogin">Login</label>
-    {createForm(
-      "email",
-      "Email",
-      "Email",
-      [required],
-      "loginInputOfLogin",
-      FormInput
-    )}
+    {createForm("email", "Email", [required], "loginInputOfLogin", FormInput)}
     <label htmlFor="loginInputOfPassword">Password</label>
     {createForm(
       "password",
-      "Password",
       "Password",
       [required],
       "loginInputOfPassword",
       FormInput,
       "password"
     )}
-    <div className={style.checkbox}>
-    <div className={style.box}>
-        {createForm(
-          "rememberMe",
-          null,
-          "Remember me",
-          null,
-          "rememberMe",
-          "input",
-          "checkbox"
-        )}
-      </div>
-      <label htmlFor="rememberMe">Remember me</label>
-    </div>
+
+    <label className={style.checkbox}>
+      {createForm(
+        "rememberMe",
+        null,
+        null,
+        "rememberMe",
+        FormInput,
+        "checkbox"
+      )}
+      <span>Remember me</span>
+    </label>
+
     {error && <div className={style.formDataError}>{error}</div>}
     <div>
       <button className={style.loginBtn}>Log in</button>

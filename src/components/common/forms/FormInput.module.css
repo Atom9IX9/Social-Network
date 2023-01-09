@@ -13,9 +13,26 @@
   font-weight: 600;
 }
 
-.input {
+.input:not([type=checkbox]) {
   width: 400px;
   height: 30px;
-  border-radius: 20px; 
+  border-radius: 20px;
 }
 
+.input[type=checkbox] {
+  appearance: inherit;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #262626;
+  border-radius: 20%;
+  margin: 0;
+  background-color: #fff;
+}
+
+.input[type=checkbox]:checked {
+  background-image: url("../../../assets/img/checked.png");
+  background-size: 30px 16.5px;
+  background-position: 45% 60%;
+  transform: translate(-40% -50%);
+}

@@ -14,25 +14,45 @@ const FormInput = ({ input, meta, ...props }) => {
       <input
         {...input}
         {...props}
-        className={isError ? s.inputValidated : s.input}
+        className={`${s.input} ${isError ? s.inputValidated : ""}`}
         placeholder={props.placeholder}
       />
     </div>
   );
 };
 
-export const createForm = (name, placeholder, labelText, validators, id, component, type) => {
+export const createForm = (
+  name,
+  placeholder,
+  validators,
+  id,
+  component,
+  type
+) => {
+  
+
   return (
-    <div>
-      <Field
-        validate={validators}
-        placeholder={placeholder}
-        name={name}
-        id={id}
-        component={component}
-        type={type}
-      />
-    </div>
+    <FieldInp
+      validators={validators}
+      placeholder={placeholder}
+      name={name}
+      id={id}
+      component={component}
+      type={type}
+    />
+  );
+};
+
+const FieldInp = (props) => {
+  return (
+    <Field
+      validate={props.validators}
+      placeholder={props.placeholder}
+      name={props.name}
+      id={props.id}
+      component={props.component}
+      type={props.type}
+    />
   );
 };
 
