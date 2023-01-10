@@ -1,8 +1,8 @@
 import { stopSubmit } from "redux-form";
 import { authAPI } from "../api/api";
 
-const SET_USER_DATA = "SET_USER_DATA";
-const SET_USER_PROFILE = "SET_USER_PROFILE";
+const SET_USER_DATA = "SET_USER_DATA/AUTH_REDUCER";
+const SET_USER_PROFILE = "SET_USER_PROFILE/AUTH_REDUCER";
 
 let initialState = {
   id: null,
@@ -76,3 +76,7 @@ export let logout = () => async (dispatch) => {
 };
 
 export default authReducer;
+
+
+
+//todo: user avatar near the login

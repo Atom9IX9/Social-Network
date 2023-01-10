@@ -2,7 +2,7 @@ import React from "react";
 import { Field } from "redux-form";
 import s from "./FormInput.module.css";
 
-const FormInput = ({ input, meta, ...props }) => {
+export const FormInput = ({ input, meta, ...props }) => {
   const isError = !meta.active && meta.touched && meta.error;
   return (
     <div>
@@ -21,6 +21,32 @@ const FormInput = ({ input, meta, ...props }) => {
   );
 };
 
+export const FormTextarea = ({ input, meta, ...props }) => {
+  const isError = !meta.active && meta.touched && meta.error;
+
+  return (
+    <div>
+      <div>
+        <label htmlFor={props.id} className={s.errorText}>
+          {isError ? meta.error : ""}
+        </label>
+      </div>
+      {/* <input
+        {...input}
+        {...props}
+        className={`${s.input} ${isError ? s.inputValidated : ""}`}
+        placeholder={props.placeholder}
+      /> */}
+      <textarea
+        {...input}
+        {...props}
+        className={isError ? s.inputValidated : ""}
+        placeholder={props.placeholder}
+      ></textarea>
+    </div>
+  );
+};
+
 export const createForm = (
   name,
   placeholder,
@@ -29,8 +55,6 @@ export const createForm = (
   component,
   type
 ) => {
-  
-
   return (
     <FieldInp
       validators={validators}
@@ -55,5 +79,3 @@ const FieldInp = (props) => {
     />
   );
 };
-
-export default FormInput;

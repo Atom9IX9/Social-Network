@@ -5,7 +5,11 @@ import {
   minLengthCreator,
   required,
 } from "../../../../utils/validators";
-import FormInput, { createForm } from "../../../common/forms/FormInput";
+import {
+  FormInput,
+  FormTextarea,
+  createForm,
+} from "../../../common/forms/FormInput";
 import s from "../ProfileInfo.module.css";
 
 const AboutUserForm = (props) => {
@@ -14,8 +18,10 @@ const AboutUserForm = (props) => {
 
   return (
     <form onSubmit={props.handleSubmit}>
-      <div>
-        <label htmlFor="userNameForm">User name:</label>
+      <div className={s.formInp}>
+        <label htmlFor="userNameForm">
+          <span className={s.labelText}>User name</span>
+        </label>
         {createForm(
           "fullName",
           null,
@@ -24,9 +30,15 @@ const AboutUserForm = (props) => {
           FormInput
         )}
       </div>
-      <div className={s.lookingForAJob}>
+      <div className={s.formInp}>
+        <label>
+          <span className={s.labelText}>About me</span>
+          {createForm("aboutMe", null, [required], "aboutMeId", FormTextarea)}
+        </label>
+      </div>
+      <div className={s.formInp}>
         <label for="LookingForAJobFormId" className={s.LookingForAJob}>
-          <span>Looking for a job:</span>
+          <span className={s.labelText}>Looking for a job</span>
           {createForm(
             "lookingForAJob",
             null,
@@ -37,7 +49,19 @@ const AboutUserForm = (props) => {
           )}
         </label>
       </div>
-      <div>lookingForAJobDescription</div>
+      <div className={s.formInp}>
+        <label>
+          <span className={s.labelText}>Skills</span>
+          <br />
+          {createForm(
+            "lookingForAJobDescription",
+            null,
+            [required],
+            "lookingForAJobDescriptionId",
+            FormTextarea
+          )}
+        </label>
+      </div>
       <div>contacts</div>
       <button className={s.saveBtn}>save</button>
     </form>
@@ -47,5 +71,7 @@ const AboutUserForm = (props) => {
 const AboutUserFormReduxForm = reduxForm({
   form: "aboutUserForm",
 })(AboutUserForm);
+
+
 
 export default AboutUserFormReduxForm;

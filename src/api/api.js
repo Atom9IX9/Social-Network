@@ -53,6 +53,25 @@ export const profileAPI = {
       })
       .then((response) => response.data);
   },
+  saveChangedProfile: (formData) => {
+    let {
+      fullName,
+      lookingForAJobDescription,
+      lookingForAJob,
+      aboutMe,
+      userId,
+    } = formData;
+    return instance
+      .put("/profile", {
+        userId,
+        lookingForAJob,
+        lookingForAJobDescription,
+        fullName,
+        aboutMe,
+        contacts: null,
+      })
+      .then((response) => response.data);
+  },
 };
 
 export const authAPI = {

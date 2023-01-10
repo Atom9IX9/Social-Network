@@ -53,7 +53,6 @@ export const addPost = (text) => {
 };
 
 const saveAvatarSuccess = (photos) => {
-
   return { type: SAVE_PHOTOS_SUCCESS, photos };
 };
 
@@ -87,6 +86,7 @@ export const setStatus = (status) => {
 
 export const getUserStatus = (userId, myProfileId) => async (dispatch) => {
   let data = await profileAPI.getStatus(userId, myProfileId);
+
   dispatch(setStatus(data));
 };
 
@@ -99,7 +99,16 @@ export const updateUserStatus = (status) => async (dispatch) => {
 
 export const saveAvatar = (file) => async (dispatch) => {
   let data = await profileAPI.saveAvatar(file);
-  dispatch(saveAvatarSuccess(data.data.photos));
+  if (data.resultCode === 0) {
+    dispatch(saveAvatarSuccess(data.data.photos));
+  }
+};
+
+export const saveChangedProfile = (formData) => async (dispatch) => {
+  let data = await profileAPI.saveChangedProfile(formData);
+  if (data.resultCode === 0) {
+    dispatch(getUserProfile(formData.userId))
+  }
 };
 
 export default profileReducer;

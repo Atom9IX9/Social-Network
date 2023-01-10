@@ -1,7 +1,7 @@
 import React from "react";
 import { reduxForm } from "redux-form";
 import { required } from "../../../../utils/validators";
-import FormInput, { createForm } from "../../forms/FormInput";
+import { FormInput, createForm } from "../../forms/FormInput";
 import style from "./LoginForm.module.css";
 
 const LoginForm = ({ handleSubmit, error }) => (

@@ -23,6 +23,8 @@ const ProfileInfo = (props) => {
         status={props.status}
         isOwner={props.isOwner}
         saveAvatar={props.saveAvatar}
+        saveChangedProfile={props.saveChangedProfile}
+        ownerId={props.ownerId}
       />
     </div>
   );

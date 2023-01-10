@@ -4,16 +4,22 @@
 }
 
 .LookingForAJob {
-  display: flex;
+  display: inline-flex;
   line-height: 20px;
-  flex-direction: row-reverse;
   gap: 20px;
-  width: max-content;
 }
-
 
 .saveBtn {
   position: relative;
   left: -190px;
-  
+}
+
+.formInp {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+
+.labelText {
+  display: block;
 }

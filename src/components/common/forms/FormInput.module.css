@@ -5,7 +5,6 @@
 .inputValidated {
   border: 2px solid red;
   padding: 5px;
-  border-radius: 12px;
 }
 
 .errorText {
@@ -35,4 +34,13 @@
   background-size: 30px 16.5px;
   background-position: 45% 60%;
   transform: translate(-40% -50%);
+}
+
+textarea {
+  width: 600px;
+  height: 300px;
+  resize: none;
+  border-radius: 20px;
+  padding: 10px;
+  border-color: #262626;
 }
