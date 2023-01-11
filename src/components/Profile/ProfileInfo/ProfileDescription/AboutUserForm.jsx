@@ -15,6 +15,16 @@ import s from "../ProfileInfo.module.css";
 const AboutUserForm = (props) => {
   const maxLength20 = maxLengthCreator(20);
   const minLength3 = minLengthCreator(3);
+  let contactInputs = Object.keys(props.profile.contacts)
+    .map((key) => {
+      return (
+        <div className={s.contact}>
+          <span className={s.linkName}>{key}</span>
+          {/* {createForm(`contacts.${key}`, key, null, key, FormInput)} */}
+        </div>
+      );
+    })
+    .filter((c) => c !== null);
 
   return (
     <form onSubmit={props.handleSubmit}>
@@ -62,7 +72,7 @@ const AboutUserForm = (props) => {
           )}
         </label>
       </div>
-      <div>contacts</div>
+      {/* <div className={s.contacts}>{contactInputs}</div> */}
       <button className={s.saveBtn}>save</button>
     </form>
   );
@@ -71,7 +81,5 @@ const AboutUserForm = (props) => {
 const AboutUserFormReduxForm = reduxForm({
   form: "aboutUserForm",
 })(AboutUserForm);
-
-
 
 export default AboutUserFormReduxForm;
