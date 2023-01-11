@@ -10,8 +10,8 @@ const ProfileDescriptionWithHooks = (props) => {
   const [editMode, setEditMode] = useState(false);
 
   const toggleEditMode = () => {
-    if (editMode) setEditMode(false);
-    else setEditMode(true);
+    if (!editMode) setEditMode(true)/* * !f*/;
+    // else setEditMode(true);
   };
 
   const onSubmit = (FormData) => {

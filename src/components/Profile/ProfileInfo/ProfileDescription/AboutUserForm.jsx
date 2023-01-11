@@ -11,6 +11,7 @@ import {
   createForm,
 } from "../../../common/forms/FormInput";
 import s from "../ProfileInfo.module.css";
+import errorStyle from "../../../common/Login/LoginForm/LoginForm.module.css";
 
 const AboutUserForm = (props) => {
   const maxLength20 = maxLengthCreator(20);
@@ -18,9 +19,9 @@ const AboutUserForm = (props) => {
   let contactInputs = Object.keys(props.profile.contacts)
     .map((key) => {
       return (
-        <div className={s.contact}>
+        <div key={key} className={s.contact}>
           <span className={s.linkName}>{key}</span>
-          {/* {createForm(`contacts.${key}`, key, null, key, FormInput)} */}
+          {createForm(`contacts.${key}`, key, null, key, FormInput)}
         </div>
       );
     })
@@ -47,7 +48,7 @@ const AboutUserForm = (props) => {
         </label>
       </div>
       <div className={s.formInp}>
-        <label for="LookingForAJobFormId" className={s.LookingForAJob}>
+        <label htmlFor="LookingForAJobFormId" className={s.LookingForAJob}>
           <span className={s.labelText}>Looking for a job</span>
           {createForm(
             "lookingForAJob",
@@ -72,7 +73,10 @@ const AboutUserForm = (props) => {
           )}
         </label>
       </div>
-      {/* <div className={s.contacts}>{contactInputs}</div> */}
+      <div className={s.contacts}>{contactInputs}</div>
+      {props.error && (
+        <div className={errorStyle.formDataError}>{props.error}</div>
+      )}
       <button className={s.saveBtn}>save</button>
     </form>
   );
@@ -80,6 +84,7 @@ const AboutUserForm = (props) => {
 
 const AboutUserFormReduxForm = reduxForm({
   form: "aboutUserForm",
+  enableReinitialize: true,
 })(AboutUserForm);
 
 export default AboutUserFormReduxForm;

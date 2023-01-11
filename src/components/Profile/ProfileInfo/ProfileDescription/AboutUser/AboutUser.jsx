@@ -3,7 +3,7 @@ import s from "../ProfileDescription.module.css";
 const AboutUser = ({ profile, toggleEditMode, isOwner }) => {
   let contactLinks = Object.keys(profile.contacts).map((key) => {
     if (!profile.contacts[key]) return null;
-    return <Contact linkName={key} link={profile.contacts[key]} />;
+    return <Contact  key={key} linkName={key} link={profile.contacts[key]} />;
   }).filter(c => c !== null);
   
   return (
@@ -29,7 +29,7 @@ const Contact = ({ linkName, link }) => {
 
   return (
     <div>
-      <span>{linkName}</span>: <span>{link}</span>
+      <span>{linkName}</span>: <a href={link} target="_blank" rel="noreferrer"><span>{link}</span></a>
     </div>
   );
 };

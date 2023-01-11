@@ -1,4 +1,4 @@
-import { reset } from "redux-form";
+import { reset, stopSubmit } from "redux-form";
 import { profileAPI } from "../api/api";
 
 const ADD_POST = "ADD-POST/PROFILE_REDUCER";
@@ -104,10 +104,24 @@ export const saveAvatar = (file) => async (dispatch) => {
   }
 };
 
+const getErrorsFromMessages = (messages) => {
+  let errors = Object.keys(messages).reduce((acc, key) => {
+    let errorMessage = messages[key].split("->");
+    errorMessage = errorMessage[1]
+      .slice(0, errorMessage[1].length - 1)
+      .toLowerCase();
+    return { ...acc, [errorMessage]: messages[key] };
+  }, {});
+
+  return errors;
+};
+
 export const saveChangedProfile = (formData) => async (dispatch) => {
   let data = await profileAPI.saveChangedProfile(formData);
   if (data.resultCode === 0) {
     dispatch(getUserProfile(formData.userId))
+  } else {
+    dispatch(stopSubmit("aboutUserForm", { contacts: getErrorsFromMessages(data.messages)}));
   }
 };
 

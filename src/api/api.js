@@ -60,6 +60,7 @@ export const profileAPI = {
       lookingForAJob,
       aboutMe,
       userId,
+      contacts
     } = formData;
     return instance
       .put("/profile", {
@@ -68,7 +69,7 @@ export const profileAPI = {
         lookingForAJobDescription,
         fullName,
         aboutMe,
-        contacts: null,
+        contacts,
       })
       .then((response) => response.data);
   },
