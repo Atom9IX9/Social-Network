@@ -105,15 +105,18 @@ export const saveAvatar = (file) => async (dispatch) => {
 };
 
 const getErrorsFromMessages = (messages) => {
+  if (!messages.length) return {}
+
   let errors = Object.keys(messages).reduce((acc, key) => {
-    let errorMessage = messages[key].split("->");
-    errorMessage = errorMessage[1]
-      .slice(0, errorMessage[1].length - 1)
+    let errorMessageName = messages[key].split("->");
+    let interfaceMessage = messages[key].split("(")[0]
+    errorMessageName = errorMessageName[1]
+      .slice(0, errorMessageName[1].length - 1)
       .toLowerCase();
-    return { ...acc, [errorMessage]: messages[key] };
+    return { ...acc, [errorMessageName]: interfaceMessage };
   }, {});
 
-  return errors;
+  return {...errors, _error: true}
 };
 
 export const saveChangedProfile = (formData) => async (dispatch) => {
@@ -122,6 +125,7 @@ export const saveChangedProfile = (formData) => async (dispatch) => {
     dispatch(getUserProfile(formData.userId))
   } else {
     dispatch(stopSubmit("aboutUserForm", { contacts: getErrorsFromMessages(data.messages)}));
+    return Promise.reject()
   }
 };
 

@@ -5,7 +5,7 @@ const AboutUser = ({ profile, toggleEditMode, isOwner }) => {
     if (!profile.contacts[key]) return null;
     return <Contact  key={key} linkName={key} link={profile.contacts[key]} />;
   }).filter(c => c !== null);
-  
+
   return (
     <>
       <div className={s.aboutMe}>{profile.aboutMe}</div>

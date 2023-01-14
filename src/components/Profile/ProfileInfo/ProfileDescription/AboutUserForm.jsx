@@ -11,7 +11,6 @@ import {
   createForm,
 } from "../../../common/forms/FormInput";
 import s from "../ProfileInfo.module.css";
-import errorStyle from "../../../common/Login/LoginForm/LoginForm.module.css";
 
 const AboutUserForm = (props) => {
   const maxLength20 = maxLengthCreator(20);
@@ -27,7 +26,7 @@ const AboutUserForm = (props) => {
     })
     .filter((c) => c !== null);
 
-  return (
+    return (
     <form onSubmit={props.handleSubmit}>
       <div className={s.formInp}>
         <label htmlFor="userNameForm">
@@ -74,10 +73,7 @@ const AboutUserForm = (props) => {
         </label>
       </div>
       <div className={s.contacts}>{contactInputs}</div>
-      {props.error && (
-        <div className={errorStyle.formDataError}>{props.error}</div>
-      )}
-      <button className={s.saveBtn}>save</button>
+      <button className={s.saveBtn} onClick={props.error || props.toggleEditMode}>save</button>
     </form>
   );
 };
