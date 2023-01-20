@@ -51,31 +51,16 @@ export const createForm = (
   name,
   placeholder,
   validators,
-  id,
   component,
   type
 ) => {
   return (
-    <FieldInp
-      validators={validators}
+    <Field
+      validate={validators}
       placeholder={placeholder}
       name={name}
-      id={id}
       component={component}
       type={type}
-    />
-  );
-};
-
-const FieldInp = (props) => {
-  return (
-    <Field
-      validate={props.validators}
-      placeholder={props.placeholder}
-      name={props.name}
-      id={props.id}
-      component={props.component}
-      type={props.type}
     />
   );
 };

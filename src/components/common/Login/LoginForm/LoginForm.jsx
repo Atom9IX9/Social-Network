@@ -4,33 +4,34 @@ import { required } from "../../../../utils/validators";
 import { FormInput, createForm } from "../../forms/FormInput";
 import style from "./LoginForm.module.css";
 
-const LoginForm = ({ handleSubmit, error }) => (
+const LoginForm = ({ handleSubmit, error, captchaImage }) => (
   <form onSubmit={handleSubmit}>
-    <label htmlFor="loginInputOfLogin">Login</label>
-    {createForm("email", "Email", [required], "loginInputOfLogin", FormInput)}
-    <label htmlFor="loginInputOfPassword">Password</label>
-    {createForm(
-      "password",
-      "Password",
-      [required],
-      "loginInputOfPassword",
-      FormInput,
-      "password"
-    )}
-
-    <label className={style.checkbox}>
-      {createForm(
-        "rememberMe",
-        null,
-        null,
-        "rememberMe",
-        FormInput,
-        "checkbox"
-      )}
-      <span>Remember me</span>
+    <label> 
+      <span>Email</span>
+      {createForm("email", "Email", [required], FormInput)}</label>
+    <label>
+      <span>Password</span>
+      {createForm("password", "Password", [required], FormInput, "password")}
     </label>
 
-    {error && <div className={style.formDataError}>{error}</div>}
+    <label className={style.checkbox}>
+      {createForm("rememberMe", null, null, FormInput, "checkbox")}
+      <span>Remember me</span>
+    </label>
+    <div className={style.loginError}>
+      {error && <div className={style.formDataError}>{error}</div>}
+    </div>
+    <div>
+      {captchaImage && (
+        <div className={style.captcha}>
+          <img src={captchaImage} alt="captcha" />
+          <label>
+            <div>Anti-bot symbols</div>
+            {createForm("captcha", null, [required], FormInput)}
+          </label>
+        </div>
+      )}
+    </div>
     <div>
       <button className={style.loginBtn}>Log in</button>
     </div>

@@ -20,43 +20,35 @@ const AboutUserForm = (props) => {
       return (
         <div key={key} className={s.contact}>
           <span className={s.linkName}>{key}</span>
-          {createForm(`contacts.${key}`, key, null, key, FormInput)}
+          {createForm(`contacts.${key}`, key, null, FormInput)}
         </div>
       );
     })
     .filter((c) => c !== null);
 
-    return (
+  return (
     <form onSubmit={props.handleSubmit}>
       <div className={s.formInp}>
-        <label htmlFor="userNameForm">
+        <label>
           <span className={s.labelText}>User name</span>
+          {createForm(
+            "fullName",
+            null,
+            [required, maxLength20, minLength3],
+            FormInput
+          )}
         </label>
-        {createForm(
-          "fullName",
-          null,
-          [required, maxLength20, minLength3],
-          "userNameForm",
-          FormInput
-        )}
       </div>
       <div className={s.formInp}>
         <label>
           <span className={s.labelText}>About me</span>
-          {createForm("aboutMe", null, [required], "aboutMeId", FormTextarea)}
+          {createForm("aboutMe", null, [required], FormTextarea)}
         </label>
       </div>
       <div className={s.formInp}>
-        <label htmlFor="LookingForAJobFormId" className={s.LookingForAJob}>
+        <label className={s.LookingForAJob}>
           <span className={s.labelText}>Looking for a job</span>
-          {createForm(
-            "lookingForAJob",
-            null,
-            null,
-            "LookingForAJobFormId",
-            FormInput,
-            "checkbox"
-          )}
+          {createForm("lookingForAJob", null, null, FormInput, "checkbox")}
         </label>
       </div>
       <div className={s.formInp}>
@@ -67,13 +59,17 @@ const AboutUserForm = (props) => {
             "lookingForAJobDescription",
             null,
             [required],
-            "lookingForAJobDescriptionId",
             FormTextarea
           )}
         </label>
       </div>
       <div className={s.contacts}>{contactInputs}</div>
-      <button className={s.saveBtn} onClick={props.error || props.toggleEditMode}>save</button>
+      <button
+        className={s.saveBtn}
+        onClick={props.error || props.toggleEditMode}
+      >
+        save
+      </button>
     </form>
   );
 };

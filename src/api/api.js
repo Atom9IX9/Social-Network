@@ -7,53 +7,55 @@ const instance = axios.create({
 });
 
 export const usersAPI = {
-  getUsers: (currentPage, pageSize) => {
-    return instance
-      .get(`users?page=${currentPage}&count=${pageSize}`)
-      .then((response) => response.data);
+  getUsers: async (currentPage, pageSize) => {
+    const response = await instance
+      .get(`users?page=${currentPage}&count=${pageSize}`);
+    return response.data;
   },
-  unfollow: (id) => {
-    return instance.delete(`follow/${id}`).then((response) => response.data);
+  unfollow: async (id) => {
+    const response = await instance.delete(`follow/${id}`);
+    return response.data;
   },
-  follow: (id) => {
-    return instance.post(`follow/${id}`).then((response) => response.data);
+  follow: async (id) => {
+    const response = await instance.post(`follow/${id}`);
+    return response.data;
   },
 };
 
 export const profileAPI = {
-  getProfile: (userId, myProfileId) => {
+  getProfile: async (userId, myProfileId) => {
     let profileId = userId;
     if (!profileId) {
       profileId = myProfileId;
     }
-    return instance
-      .get(`profile/${profileId}`)
-      .then((response) => response.data);
+    const response = await instance
+      .get(`profile/${profileId}`);
+    return response.data;
   },
-  getStatus: (userId, myProfileId) => {
+  getStatus: async (userId, myProfileId) => {
     let profileId = userId;
     if (!profileId) {
       profileId = myProfileId;
     }
-    return instance
-      .get(`profile/status/${profileId}`)
-      .then((response) => response.data);
+    const response = await instance
+      .get(`profile/status/${profileId}`);
+    return response.data;
   },
-  updateStatus: (status) => {
-    return instance
-      .put("profile/status", { status: status })
-      .then((response) => response.data);
+  updateStatus: async (status) => {
+    const response = await instance
+      .put("profile/status", { status: status });
+    return response.data;
   },
-  saveAvatar: (file) => {
+  saveAvatar: async (file) => {
     const formData = new FormData();
     formData.append("image", file);
-    return instance
+    const response = await instance
       .put("/profile/photo", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((response) => response.data);
+      });
+    return response.data;
   },
-  saveChangedProfile: (formData) => {
+  async saveChangedProfile (formData) {
     let {
       fullName,
       lookingForAJobDescription,
@@ -62,7 +64,7 @@ export const profileAPI = {
       userId,
       contacts
     } = formData;
-    return instance
+    const response = await instance
       .put("/profile", {
         userId,
         lookingForAJob,
@@ -70,21 +72,30 @@ export const profileAPI = {
         fullName,
         aboutMe,
         contacts,
-      })
-      .then((response) => response.data);
+      });
+    return response.data;
   },
 };
 
 export const authAPI = {
-  me: () => {
-    return instance.get("auth/me").then((response) => response.data);
+  me: async () => {
+    const response = await instance.get("auth/me");
+    return response.data;
   },
-  login: (email, password, rememberMe = false) => {
-    return instance
-      .post("auth/login", { email, password, rememberMe })
-      .then((response) => response.data);
+  login: async (email, password, rememberMe = false, captcha) => {
+    const response = await instance
+      .post("auth/login", { email, password, rememberMe, captcha });
+    return response.data;
   },
-  logout: () => {
-    return instance.delete("auth/login").then((response) => response.data);
+  logout: async () => {
+    const response = await instance.delete("auth/login");
+    return response.data;
   },
 };
+
+export const securityAPI = {
+  getCaptcha: async () => {
+    const response = await instance.get("security/get-captcha-url");
+    return response.data;
+  }
+}

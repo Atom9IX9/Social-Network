@@ -39,3 +39,11 @@ label {
   color: red;
   padding: 5px;
 }
+
+.captcha {
+  margin-top: 10px;
+}
+
+.loginError {
+  margin-top: 40px;
+}

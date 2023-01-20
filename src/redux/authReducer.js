@@ -1,8 +1,9 @@
 import { stopSubmit } from "redux-form";
-import { authAPI } from "../api/api";
+import { authAPI, securityAPI } from "../api/api";
 
 const SET_USER_DATA = "SET_USER_DATA/AUTH_REDUCER";
 const SET_USER_PROFILE = "SET_USER_PROFILE/AUTH_REDUCER";
+const SET_CAPTCHA_IMAGE = "SET_CAPTCHA_IMAGE/AUTH_REDUCER"
 
 let initialState = {
   id: null,
@@ -10,6 +11,7 @@ let initialState = {
   login: null,
   isAuth: false,
   userProfile: null,
+  captchaImage: null
 };
 
 let authReducer = (state = initialState, action) => {
@@ -24,6 +26,11 @@ let authReducer = (state = initialState, action) => {
       return {
         ...state,
         userProfile: action.profile,
+      };
+    case SET_CAPTCHA_IMAGE:
+      return {
+        ...state,
+        captchaImage: action.captchaImage
       };
     default:
       return state;
@@ -58,12 +65,16 @@ export let getAuth = () => async (dispatch) => {
   }
 };
 
-export let login = (email, password, rememberMe) => async (dispatch) => {
-  let data = await authAPI.login(email, password, rememberMe);
+export let login = (email, password, rememberMe, captcha) => async (dispatch) => {
+  let data = await authAPI.login(email, password, rememberMe, captcha);
+  let message = data.messages.length > 0 ? data.messages[0] : "Some error";
   if (data.resultCode === 0) {
     dispatch(getAuth());
+    dispatch(setCaptchaImage(null));
+  } else if (data.resultCode === 10) {
+    dispatch(getCaptchaUrl())
+    dispatch(stopSubmit("login", { _error: message }));
   } else {
-    let message = data.messages.length > 0 ? data.messages[0] : "Some error";
     dispatch(stopSubmit("login", { _error: message }));
   }
 };
@@ -74,6 +85,19 @@ export let logout = () => async (dispatch) => {
     dispatch(setUserData(null, null, null, false));
   }
 };
+
+let setCaptchaImage = (captchaImage) => {
+  return {
+    type: SET_CAPTCHA_IMAGE,
+    captchaImage
+  }
+}
+
+export let getCaptchaUrl = () => async (dispatch) => {
+  let data = await securityAPI.getCaptcha();
+  let captchaImage = data.url
+  dispatch(setCaptchaImage(captchaImage))
+}
 
 export default authReducer;
 
