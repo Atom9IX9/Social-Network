@@ -3,7 +3,7 @@ import News from "../News/News";
 import Settings from "../Settings/Settings";
 import UsersContainer from "../Users/UsersContainer";
 import Music from "../Music/Music";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import style from "./Content.module.css";
 import Login from "../common/Login/Login";
 import withSuspense from "../../hoc/withSuspense";
@@ -34,6 +34,7 @@ const Content = ({ isActiveNav, toggleNav }) => {
         <span className={style.btnLine3}></span>
       </div>
       <Routes>
+        <Route path="/" element={<Navigate to="/profile" />} />
         <Route path="/news" element={<News />} />
         <Route path="/music" element={<Music />} />
         <Route path="/settings" element={<Settings />} />

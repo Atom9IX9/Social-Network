@@ -16,7 +16,7 @@ class App extends React.Component {
   };
 
   render = () => {
-    if (this.props.initialized) {
+    if (this.props.initialized === true) {
       return (
         <div className="app-container">
           <HeaderContainer />
@@ -24,8 +24,10 @@ class App extends React.Component {
           <ContentContainer />
         </div>
       );
+    } else if (this.props.initialized === "error") {
+      return <div>ERROR</div>;
     } else {
-      return <Preloader />
+      return <Preloader />;
     }
   };
 }
