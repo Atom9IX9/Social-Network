@@ -1,5 +1,5 @@
 import MyPosts from "./MyPosts";
-import { addPostFromForm } from "../../../redux/profileReducer";
+import { addPostFromForm, addLike } from "../../../redux/profileReducer";
 import { connect } from "react-redux";
 import { compose } from "redux";
 
@@ -11,5 +11,5 @@ let mapStateToProps = (state) => {
 };
 
 export default compose(
-  connect(mapStateToProps, { addPostFromForm })
+  connect(mapStateToProps, { addPostFromForm, addLike })
 )(MyPosts);

@@ -18,7 +18,6 @@ import {
 class UsersContainerComponent extends React.Component {
   componentDidMount() {
     this.props.getUsers(this.props.currentPage, this.props.pageSize);
-    //let warnAboutRender = ((line) => console.warn(`In line:${line}. Must be Preloader`))(30)
   }
 
   onPageChange = (pageNumber) => {

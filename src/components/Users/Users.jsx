@@ -15,18 +15,16 @@ const Users = ({
   ownerId,
 }) => {
   let users = usersArray.map((u) => {
-    if (u.id !== ownerId) {
-      return (
-        <div className={s.usersPage} key={u.id}>
-          <User
-            user={u}
-            isFollowing={isFollowing}
-            unfollow={unfollow}
-            follow={follow}
-          />
-        </div>
-      );
-    }
+    return (
+      <div className={s.usersPage} key={u.id}>
+        <User
+          user={u}
+          isFollowing={isFollowing}
+          unfollow={unfollow}
+          follow={follow}
+        />
+      </div>
+    );
   });
   return (
     <>

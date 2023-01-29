@@ -6,7 +6,7 @@ import {
   getUserStatus,
   updateUserStatus,
   saveAvatar,
-  saveChangedProfile
+  saveChangedProfile,
 } from "../../redux/profileReducer";
 import { getAuth } from "../../redux/authReducer";
 import withRouter from "../../hoc/withRouter";
@@ -28,7 +28,7 @@ class ProfileContainer extends React.Component {
       this.props.router.params.userId,
       this.props.myProfileId
     );
-  }
+  };
 
   componentDidMount = () => {
     this.updateProfile();
@@ -69,7 +69,7 @@ export default compose(
     getUserStatus,
     updateUserStatus,
     saveAvatar,
-    saveChangedProfile
+    saveChangedProfile,
   }),
   withRouter,
   withAuthRedirect
