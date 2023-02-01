@@ -3,19 +3,19 @@ import s from "./MyPosts.module.css";
 import MyPostsForm from "./MyPostsForm/MyPostsForm";
 import Post from "./Post/Post";
 
-const MyPosts = (props) => {
-  let postElements = props.posts.map((p) => (
+const MyPosts = ({posts, addLike, addPostFromForm}) => {
+  let postElements = posts.map((p) => (
     <Post
       text={p.text}
       likes={p.likes}
       liked={p.liked}
       key={p.postId}
       id={p.postId}
-      addLike={props.addLike}
+      addLike={addLike}
     />
   ));
 
-  let onSubmit = (formData) => props.addPostFromForm(formData);
+  let onSubmit = (formData) => addPostFromForm(formData);
 
   return (
     <div className={s.myPosts}>

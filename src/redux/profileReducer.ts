@@ -1,4 +1,8 @@
-// import { reset, stopSubmit } from "redux-form";
+import { rootStateType } from "./reduxStore";
+import { ThunkAction } from "redux-thunk";
+import { PhotosType } from "./../types/types";
+import { ProfileType } from "../types/types";
+import { reset, stopSubmit } from "redux-form";
 import { profileAPI } from "../api/api";
 import { updateArrayObj } from "../utils/objectHelpers";
 
@@ -8,9 +12,29 @@ const SET_STATUS = "SET_STATUS/PROFILE_REDUCER";
 const SAVE_PHOTOS_SUCCESS = "SAVE_PHOTOS_SUCCESS/PROFILE_REDUCER";
 const ADD_LIKE = "ADD_LIKE/PROFILE_REDUCER";
 
+type ProfileReducerActionTypes =
+  | addPostActionType
+  | addLikeActionType
+  | saveAvatarSuccessActionType
+  | setUserProfileActionType
+  | setStatusActionType;
+
+export type ThunkType = ThunkAction<
+  Promise<void>,
+  rootStateType,
+  unknown,
+  ProfileReducerActionTypes
+>;
+
+export type PostType = {
+  postId: number;
+  text: string;
+  likes: number;
+  liked: boolean;
+};
 export type InitialStateType = {
-  posts: Array<{ postId: number; text: string; likes: number; liked: boolean }>;
-  profile: any;
+  posts: Array<PostType>;
+  profile: ProfileType | null | any; // any should delete
   status: string | null;
 };
 const initialState: InitialStateType = {
@@ -25,7 +49,10 @@ const initialState: InitialStateType = {
   status: "",
 };
 
-let profileReducer = (state = initialState, action: any): InitialStateType => {
+let profileReducer = (
+  state = initialState,
+  action: ProfileReducerActionTypes
+): InitialStateType => {
   switch (action.type) {
     case ADD_POST:
       return {
@@ -44,7 +71,7 @@ let profileReducer = (state = initialState, action: any): InitialStateType => {
       return {
         ...state,
         posts: updateArrayObj(state.posts, action.id, "postId", {
-          likes: action.newLikesCount,
+          likes: action.likes,
           liked: true,
         }),
       };
@@ -79,42 +106,49 @@ export const addPost = (text: string): addPostActionType => {
 type addLikeActionType = {
   type: typeof ADD_LIKE;
   id: number;
-  newLikesCount: number;
+  likes: number;
 };
-export const addLike = (
-  id: number,
-  newLikesCount: number
-): addLikeActionType => {
-  return { type: ADD_LIKE, id, newLikesCount };
+export const addLike = (id: number, likes: number): addLikeActionType => {
+  return { type: ADD_LIKE, id, likes: likes + 1 };
 };
 
 type saveAvatarSuccessActionType = {
   type: typeof SAVE_PHOTOS_SUCCESS;
-  photos: any;
+  photos: PhotosType;
 };
-const saveAvatarSuccess = (photos: any): saveAvatarSuccessActionType => {
+
+const saveAvatarSuccess = (photos: PhotosType): saveAvatarSuccessActionType => {
   return { type: SAVE_PHOTOS_SUCCESS, photos };
 };
 
-export const addPostFromForm = (formData: any) => (dispatch: any) => {
-  if (formData.newPostText) {
-    dispatch(addPost(formData.newPostText));
-    // dispatch(reset("myPosts"));
-  }
+export type addPostFromFormFormDataType = {
+  newPostText: string;
 };
+export const addPostFromForm =
+  (formData: addPostFromFormFormDataType) => (dispatch: any) => {
+    if (formData.newPostText) {
+      dispatch(addPost(formData.newPostText));
+      dispatch(reset("myPosts"));
+    }
+  };
 
 type setUserProfileActionType = {
   type: typeof SET_USER_PROFILE;
-  profile: any;
+  profile: ProfileType;
 };
-export const setUserProfile = (profile: any): setUserProfileActionType => {
+export const setUserProfile = (
+  profile: ProfileType
+): setUserProfileActionType => {
   return {
     type: SET_USER_PROFILE,
     profile,
   };
 };
 
-export const getUserProfile = (userId: number, myProfileId?: number) => {
+export const getUserProfile = (
+  userId: number | null,
+  myProfileId: number
+): ThunkType => {
   return async (dispatch: any) => {
     let data = await profileAPI.getProfile(userId, myProfileId);
     dispatch(setUserProfile(data));
@@ -133,31 +167,35 @@ export const setStatus = (status: string): setStatusActionType => {
 };
 
 export const getUserStatus =
-  (userId: number, myProfileId?: number) => async (dispatch: any) => {
+  (userId: number, myProfileId: number): ThunkType =>
+  async (dispatch) => {
     let data = await profileAPI.getStatus(userId, myProfileId);
-
     dispatch(setStatus(data));
   };
 
-export const updateUserStatus = (status: string) => async (dispatch: any) => {
-  let data = await profileAPI.updateStatus(status);
-  if (data.resultCode === 0) {
-    dispatch(setStatus(status));
-  }
-};
+export const updateUserStatus =
+  (status: string): ThunkType =>
+  async (dispatch) => {
+    let data = await profileAPI.updateStatus(status);
+    if (data.resultCode === 0) {
+      dispatch(setStatus(status));
+    }
+  };
 
-export const saveAvatar = (file: any) => async (dispatch: any) => {
-  let data = await profileAPI.saveAvatar(file);
-  if (data.resultCode === 0) {
-    dispatch(saveAvatarSuccess(data.data.photos));
-  }
-};
+export const saveAvatar =
+  (file: any): ThunkType =>
+  async (dispatch) => {
+    let data = await profileAPI.saveAvatar(file);
+    if (data.resultCode === 0) {
+      dispatch(saveAvatarSuccess(data.data.photos));
+    }
+  };
 
-const getErrorsFromMessages = (messages: Array<any>) => {
+const __getErrorsFromMessages = (messages: Array<string>) => {
   if (!messages.length) return {};
 
   let errors = Object.keys(messages).reduce((acc, key: any) => {
-    let errorMessageName = messages[key].split("->");
+    let errorMessageName: Array<string> | string = messages[key].split("->");
     let interfaceMessage = messages[key].split("(")[0];
     errorMessageName = errorMessageName[1]
       .slice(0, errorMessageName[1].length - 1)
@@ -168,18 +206,23 @@ const getErrorsFromMessages = (messages: Array<any>) => {
   return { ...errors, _error: true };
 };
 
-export const saveChangedProfile = (formData: any) => async (dispatch: any) => {
-  let data = await profileAPI.saveChangedProfile(formData);
-  if (data.resultCode === 0) {
-    dispatch(getUserProfile(formData.userId));
-  } else {
-    dispatch(
-      // stopSubmit("aboutUserForm", {
-      //   contacts: getErrorsFromMessages(data.messages),
-      // })
-    );
-    return Promise.reject();
-  }
+export type saveChangedProfileFormDataType = {
+  formData: ProfileType;
+  userId: number;
+  ownerId: number;
 };
+export const saveChangedProfile =
+  (formData: ProfileType, ownerId: number, userId: number | null ): ThunkType =>
+  async (dispatch) => {
+    let data = await profileAPI.saveChangedProfile(formData);
+    if (data.resultCode === 0) {
+      dispatch(getUserProfile(userId, ownerId));
+    } else {
+      stopSubmit("aboutUserForm", {
+        contacts: __getErrorsFromMessages(data.messages),
+      });
+      return Promise.reject();
+    }
+  };
 
 export default profileReducer;

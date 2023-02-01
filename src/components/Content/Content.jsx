@@ -38,7 +38,7 @@ const Content = ({ isActiveNav, toggleNav }) => {
         <Route path="/news" element={<News />} />
         <Route path="/music" element={<Music />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/users" element={<UsersContainer />} />
+        <Route path="/users" element={<UsersContainer pageTitle="Users" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/messages/*" element={<MessagesContainer />} />
         <Route path="/profile/:userId" element={<ProfileContainer />} />

@@ -1,9 +1,29 @@
-// import { stopSubmit } from "redux-form";
-import { authAPI, securityAPI } from "../api/api";
+import { rootStateType } from "./reduxStore";
+import { ThunkAction } from "redux-thunk";
+import { ProfileType } from "../types/types";
+import { stopSubmit } from "redux-form";
+import {
+  authAPI,
+  CaptchaResultCodes,
+  ResultCodes,
+  securityAPI,
+} from "../api/api";
 
 const SET_USER_DATA = "SET_USER_DATA/AUTH_REDUCER";
 const SET_USER_PROFILE = "SET_USER_PROFILE/AUTH_REDUCER";
 const SET_CAPTCHA_IMAGE = "SET_CAPTCHA_IMAGE/AUTH_REDUCER";
+
+type AuthReducerActionTypes =
+  | SetUserDataActionType
+  | setCaptchaImageActionType
+  | SetUserProfileActionType
+
+type ThunkType = ThunkAction<
+  Promise<void>,
+  rootStateType,
+  unknown,
+  AuthReducerActionTypes
+>;
 
 export type InitialStateType = {
   id: number | null;
@@ -22,7 +42,10 @@ const initialState: InitialStateType = {
   captchaImage: null,
 };
 
-let authReducer = (state = initialState, action: any): InitialStateType => {
+let authReducer = (
+  state = initialState,
+  action: AuthReducerActionTypes
+): InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
@@ -73,44 +96,57 @@ export let setUserData = (
 };
 
 type SetUserProfileActionType = {
-  type: typeof SET_USER_PROFILE
-  profile: any
-}
-export let setUserProfile = (profile: any): SetUserProfileActionType => {
+  type: typeof SET_USER_PROFILE;
+  profile: ProfileType;
+};
+export let setUserProfile = (
+  profile: ProfileType
+): SetUserProfileActionType => {
   return {
     type: SET_USER_PROFILE,
     profile,
   };
 };
 
-export let getAuth = () => async (dispatch: any) => {
+export let getAuth = (): ThunkType => async (dispatch) => {
   const data = await authAPI.me();
-  if (data.resultCode === 0) {
+  if (data.resultCode === ResultCodes.Success) {
     let { id, email, login } = data.data;
-
     dispatch(setUserData(id, email, login, true));
   }
 };
 
 export let login =
-  (email: string, password: string, rememberMe: boolean, captcha: string) =>
-  async (dispatch: any) => {
-    let data = await authAPI.login(email, password, rememberMe, captcha);
-    let message = data.messages.length > 0 ? data.messages[0] : "Some error";
-    if (data.resultCode === 0) {
-      dispatch(getAuth());
-      dispatch(setCaptchaImage(null));
-    } else if (data.resultCode === 10) {
-      dispatch(getCaptchaUrl());
-      // dispatch(stopSubmit("login", { _error: message }));
-    } else {
-      // dispatch(stopSubmit("login", { _error: message }));
+  (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha: string | null
+  ): ThunkType =>
+  async (dispatch) => {
+    try {
+      let data = await authAPI.login(email, password, rememberMe, captcha);
+      let message = data.messages.length > 0 ? data.messages[0] : "Some error";
+      if (data.resultCode === ResultCodes.Success) {
+        dispatch(getAuth());
+        dispatch(setCaptchaImage(null));
+      } else if (data.resultCode === CaptchaResultCodes.CaptchaIsRequired) {
+        dispatch(getCaptchaUrl());
+        // @ts-ignore
+        dispatch(stopSubmit("login", { _error: message }));
+      } else {
+        // @ts-ignore
+        dispatch(stopSubmit("login", { _error: message }));
+      }
+    } catch (error: any) {
+      // @ts-ignore 
+      dispatch(stopSubmit("login", { _error: error.message }));
     }
   };
 
-export let logout = () => async (dispatch: any) => {
+export let logout = (): ThunkType => async (dispatch) => {
   let data = await authAPI.logout();
-  if (data.resultCode === 0) {
+  if (data.resultCode === ResultCodes.Success) {
     dispatch(setUserData(null, null, null, false));
   }
 };
@@ -128,7 +164,7 @@ let setCaptchaImage = (
   };
 };
 
-export let getCaptchaUrl = () => async (dispatch: any) => {
+export let getCaptchaUrl = (): ThunkType => async (dispatch) => {
   let data = await securityAPI.getCaptcha();
   let captchaImage = data.url;
   dispatch(setCaptchaImage(captchaImage));

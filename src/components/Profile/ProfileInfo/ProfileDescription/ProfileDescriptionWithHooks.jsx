@@ -16,7 +16,7 @@ const ProfileDescriptionWithHooks = (props) => {
 
   const onSubmit = (FormData) => {
     props
-      .saveChangedProfile({ ...FormData, userId: props.ownerId })
+      .saveChangedProfile( FormData, props.ownerId, null )
       .then(() => toggleEditMode());
   };
 

@@ -29,7 +29,6 @@ label {
 }
 
 .loginBtn:hover {
-  margin-left: 10px;
   background: #262626;
   color: #81b441;
   scale: 1.2;

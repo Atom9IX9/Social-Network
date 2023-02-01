@@ -1,4 +1,5 @@
-import s from "../ProfileDescription.module.css";
+import * as React from 'react';
+import style from "../ProfileDescription.module.css";
 
 const AboutUser = ({ profile, toggleEditMode, isOwner }) => {
   let contactLinks = Object.keys(profile.contacts).map((key) => {
@@ -8,15 +9,15 @@ const AboutUser = ({ profile, toggleEditMode, isOwner }) => {
 
   return (
     <>
-      <div className={s.aboutMe}>{profile.aboutMe}</div>
+      <div className={style.aboutMe}>{profile.aboutMe}</div>
       <h5>About Job</h5>
-      <div className={s.lookingForAJob}>
+      <div className={style.lookingForAJob}>
         Need work: {profile.lookingForAJob ? "Yes" : "No"}
       </div>
-      <div className={s.workDescription}>
+      <div className={style.workDescription}>
         {profile.lookingForAJobDescription}
       </div>
-      <div className={s.contacts}>
+      <div className={style.contacts}>
         contacts: {contactLinks.length ? contactLinks : "no contacts"}
       </div>
       {isOwner && <button onClick={toggleEditMode}>edit</button>}

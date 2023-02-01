@@ -1,10 +1,23 @@
-// import { reset } from "redux-form";
+import { ThunkAction } from "redux-thunk";
+import { reset } from "redux-form";
+import { rootStateType } from "./reduxStore";
 
 const ADD_MESSAGE = "ADD-MESSAGE";
 
+type MessagesReducerActionTypes = AddNewMessageActionType;
+
+type ThunkType = ThunkAction<
+  void,
+  rootStateType,
+  unknown,
+  MessagesReducerActionTypes
+>;
+
+export type MessageType = { messageId: number; message: string; isMy: boolean };
+export type ContactType = { contactId: number; name: string };
 export type InitialStateType = {
-  contacts: Array<{ contactId: number; name: string }>;
-  messages: Array<{ messageId: number; message: string; isMy: boolean }>;
+  contacts: Array<ContactType>;
+  messages: Array<MessageType>;
 };
 let initialState: InitialStateType = {
   contacts: [
@@ -23,7 +36,10 @@ let initialState: InitialStateType = {
   ],
 };
 
-let messagesReducer = (state = initialState, action: any): InitialStateType => {
+let messagesReducer = (
+  state = initialState,
+  action: MessagesReducerActionTypes
+): InitialStateType => {
   switch (action.type) {
     case ADD_MESSAGE:
       return {
@@ -46,16 +62,23 @@ type AddNewMessageActionType = {
   type: typeof ADD_MESSAGE;
   message: string;
   isMy: boolean;
-}
-export const addNewMessage = (message: string, isMy: boolean): AddNewMessageActionType => {
+};
+export const addNewMessage = (
+  message: string,
+  isMy: boolean
+): AddNewMessageActionType => {
   return { type: ADD_MESSAGE, message, isMy };
 };
 
-export const addMessageFromForm = (formData: any) => (dispatch: any) => {
-  if (formData.newMessage) {
-    dispatch(addNewMessage(formData.newMessage, true));
-    // dispatch(reset("messages"));
-  }
-};
+type FormDataType = { newMessage: string };
+export const addMessageFromForm =
+  (formData: FormDataType): ThunkType =>
+  (dispatch) => {
+    if (formData.newMessage) {
+      dispatch(addNewMessage(formData.newMessage, true));
+      // @ts-ignore
+      dispatch(reset("messages"));
+    }
+  };
 
 export default messagesReducer;

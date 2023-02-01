@@ -17,7 +17,7 @@ const Login = ({login, isAuth, captchaImage}) => {
   return (
     <div className={style.loginPage}>
       <div className={style.loginWrap}>
-        <h1>Liogin</h1>
+        <h1>Login</h1>
         <LoginReduxForm onSubmit={onSubmit} captchaImage={captchaImage} />
       </div>
     </div>
