@@ -76,8 +76,8 @@ export const initialize = (): ThunkType => (dispatch) => {
     .catch((error) => {
       if (error.code === "ERR_NETWORK")
         dispatch(setInitializedError(error.code));
+        dispatch(setInitializedSuccess()); //! delete
     });
-  // dispatch(setInitializedSuccess());
 };
 
 export default appReducer;

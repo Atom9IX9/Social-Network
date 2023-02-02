@@ -29,3 +29,9 @@ export type UserType = {
   status: string | null;
   followed: boolean;
 }
+export type LoginFormDataValues = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha: string;
+};

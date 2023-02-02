@@ -18,7 +18,7 @@ type AuthReducerActionTypes =
   | setCaptchaImageActionType
   | SetUserProfileActionType
 
-type ThunkType = ThunkAction<
+export type ThunkType = ThunkAction<
   Promise<void>,
   rootStateType,
   unknown,

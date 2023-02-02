@@ -1,20 +1,23 @@
 import React from "react";
-import { Field } from "redux-form";
-import s from "./FormInput.module.css";
+import style from "./FormInput.module.css";
 
-export const FormInput = ({ input, meta, ...props }) => {
-  const isError = !meta.active && meta.touched && meta.error;
+export const FormInput = ({
+  input,
+  meta: { active, touched, error },
+  ...props
+}) => {
+  const isError = !active && touched && error;
   return (
     <div>
       <div>
-        <label htmlFor={props.id} className={s.errorText}>
-          {isError ? meta.error : ""}
+        <label htmlFor={props.id} className={style.errorText}>
+          {isError ? error : ""}
         </label>
       </div>
       <input
         {...input}
         {...props}
-        className={`${s.input} ${isError ? s.inputValidated : ""}`}
+        className={`${style.input} ${isError ? style.inputValidated : ""}`}
         placeholder={props.placeholder}
       />
     </div>
@@ -27,40 +30,18 @@ export const FormTextarea = ({ input, meta, ...props }) => {
   return (
     <div>
       <div>
-        <label htmlFor={props.id} className={s.errorText}>
+        <label htmlFor={props.id} className={style.errorText}>
           {isError ? meta.error : ""}
         </label>
       </div>
-      {/* <input
-        {...input}
-        {...props}
-        className={`${s.input} ${isError ? s.inputValidated : ""}`}
-        placeholder={props.placeholder}
-      /> */}
       <textarea
         {...input}
         {...props}
-        className={isError ? s.inputValidated : ""}
+        className={isError ? style.inputValidated : ""}
         placeholder={props.placeholder}
       ></textarea>
     </div>
   );
 };
 
-export const createForm = (
-  name,
-  placeholder,
-  validators,
-  component,
-  type
-) => {
-  return (
-    <Field
-      validate={validators}
-      placeholder={placeholder}
-      name={name}
-      component={component}
-      type={type}
-    />
-  );
-};
+

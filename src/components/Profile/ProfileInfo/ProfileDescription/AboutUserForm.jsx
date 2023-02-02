@@ -5,12 +5,9 @@ import {
   minLengthCreator,
   required,
 } from "../../../../utils/validators";
-import {
-  FormInput,
-  FormTextarea,
-  createForm,
-} from "../../../common/forms/FormInput";
-import s from "../ProfileInfo.module.css";
+import { FormInput, FormTextarea } from "../../../common/forms/FormInput";
+import { createForm } from "../../../common/forms/createForm";
+import style from "../ProfileInfo.module.css";
 
 const AboutUserForm = (props) => {
   const maxLength20 = maxLengthCreator(20);
@@ -18,9 +15,9 @@ const AboutUserForm = (props) => {
   let contactInputs = Object.keys(props.profile.contacts)
     .map((key) => {
       return (
-        <div key={key} className={s.contact}>
-          <span className={s.linkName}>{key}</span>
-          {createForm(`contacts.${key}`, key, null, FormInput)}
+        <div key={key} className={style.contact}>
+          <span className={style.linkName}>{key}</span>
+          {createForm(`contacts.${key}`, FormInput, key, null)}
         </div>
       );
     })
@@ -28,44 +25,40 @@ const AboutUserForm = (props) => {
 
   return (
     <form onSubmit={props.handleSubmit}>
-      <div className={s.formInp}>
+      <div className={style.formInp}>
         <label>
-          <span className={s.labelText}>User name</span>
-          {createForm(
-            "fullName",
-            null,
-            [required, maxLength20, minLength3],
-            FormInput
-          )}
+          <span className={style.labelText}>User name</span>
+          {createForm("fullName", FormInput, null, [
+            required,
+            maxLength20,
+            minLength3,
+          ])}
         </label>
       </div>
-      <div className={s.formInp}>
+      <div className={style.formInp}>
         <label>
-          <span className={s.labelText}>About me</span>
-          {createForm("aboutMe", null, [required], FormTextarea)}
+          <span className={style.labelText}>About me</span>
+          {createForm("aboutMe", FormTextarea, null, [required])}
         </label>
       </div>
-      <div className={s.formInp}>
-        <label className={s.LookingForAJob}>
-          <span className={s.labelText}>Looking for a job</span>
-          {createForm("lookingForAJob", null, null, FormInput, "checkbox")}
+      <div className={style.formInp}>
+        <label className={style.LookingForAJob}>
+          <span className={style.labelText}>Looking for a job</span>
+          {createForm("lookingForAJob", FormInput, null, null, "checkbox")}
         </label>
       </div>
-      <div className={s.formInp}>
+      <div className={style.formInp}>
         <label>
-          <span className={s.labelText}>Skills</span>
+          <span className={style.labelText}>Skills</span>
           <br />
-          {createForm(
-            "lookingForAJobDescription",
-            null,
-            [required],
-            FormTextarea
-          )}
+          {createForm("lookingForAJobDescription", FormTextarea, null, [
+            required,
+          ])}
         </label>
       </div>
-      <div className={s.contacts}>{contactInputs}</div>
+      <div className={style.contacts}>{contactInputs}</div>
       <button
-        className={s.saveBtn}
+        className={style.saveBtn}
         onClick={props.error || props.toggleEditMode}
       >
         save

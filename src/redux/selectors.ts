@@ -2,7 +2,7 @@ import { ContactType, MessageType } from "./messagesReducer";
 import { ProfileType, UserType } from "./../types/types";
 import { rootStateType } from "./reduxStore";
 // * App
-export const getAppInitialized = (state: rootStateType): boolean => {
+export const getAppInitialized = (state: rootStateType): boolean | string => {
   return state.app.initialized;
 };
 

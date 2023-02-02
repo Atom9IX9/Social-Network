@@ -46,7 +46,7 @@ type ThunkType = ThunkAction<
   UsersReducerActionType
 >;
 
-type DispatchType = Dispatch<UsersReducerActionType>
+type DispatchType = Dispatch<UsersReducerActionType>;
 
 const usersReducer = (
   state = initialState,
@@ -56,14 +56,14 @@ const usersReducer = (
     case FOLLOW:
       return {
         ...state,
-        users: updateArrayObj(state.users, action.userId, "id", {
+        users: updateArrayObj(state.users, "id", action.userId, {
           followed: true,
         }),
       };
     case UNFOLLOW:
       return {
         ...state,
-        users: updateArrayObj(state.users, action.userId, "id", {
+        users: updateArrayObj<UserType, number>(state.users, "id", action.userId, {
           followed: false,
         }),
       };
@@ -200,7 +200,9 @@ let __followUnfollowFlow = async (
   dispatch: DispatchType,
   userId: number,
   apiMethod: any,
-  actionCreator: (userId: number) => FollowSuccessActionType | UnfollowSuccessActionType
+  actionCreator: (
+    userId: number
+  ) => FollowSuccessActionType | UnfollowSuccessActionType
 ) => {
   dispatch(toggleIsFollowing(true, userId));
   let data = await apiMethod(userId);

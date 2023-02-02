@@ -34,7 +34,7 @@ export type PostType = {
 };
 export type InitialStateType = {
   posts: Array<PostType>;
-  profile: ProfileType | null | any; // any should delete
+  profile: ProfileType | null;
   status: string | null;
 };
 const initialState: InitialStateType = {
@@ -48,6 +48,8 @@ const initialState: InitialStateType = {
   profile: null,
   status: "",
 };
+
+// let ActionParamsType = Object.keys(initialState.posts[0])
 
 let profileReducer = (
   state = initialState,
@@ -67,10 +69,10 @@ let profileReducer = (
           },
         ],
       };
-    case ADD_LIKE:
+    case ADD_LIKE:      
       return {
         ...state,
-        posts: updateArrayObj(state.posts, action.id, "postId", {
+        posts: updateArrayObj<PostType, number>(state.posts, "postId", action.id, {
           likes: action.likes,
           liked: true,
         }),
@@ -86,6 +88,7 @@ let profileReducer = (
         status: action.status,
       };
     case SAVE_PHOTOS_SUCCESS:
+      if (!state.profile) return state
       return {
         ...state,
         profile: { ...state.profile, photos: action.photos },

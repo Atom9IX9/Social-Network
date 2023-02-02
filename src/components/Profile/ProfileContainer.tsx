@@ -96,5 +96,5 @@ export default compose(
     }
   ),
   withRouter,
-  withAuthRedirect
+  //withAuthRedirect
 )(ProfileContainer);
