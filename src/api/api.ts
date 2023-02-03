@@ -66,7 +66,7 @@ export const profileAPI = {
       fullName,
       lookingForAJobDescription,
       lookingForAJob,
-      //aboutMe, //! should add
+      aboutMe, 
       userId,
       contacts,
     } = formData;
@@ -75,7 +75,7 @@ export const profileAPI = {
       lookingForAJob,
       lookingForAJobDescription,
       fullName,
-      //aboutMe, //! should add
+      aboutMe, 
       contacts,
     });
     return response.data;

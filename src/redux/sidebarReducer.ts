@@ -1,6 +1,8 @@
+export type SidebarFriendType = { name: string; id: number }
+export type SidebarLinkType = { path: string; linkName: string; linkId: number }
 export type InitialStateType = {
-  friends: Array<{ name: string; id: number }>;
-  links: Array<{ path: string; linkName: string; linkId: number }>;
+  friends: Array<SidebarFriendType>;
+  links: Array<SidebarLinkType>;
 };
 let initialState: InitialStateType = {
   friends: [

@@ -3,7 +3,7 @@ import style from "./Profile.module.css";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import * as React from 'react';
 import { ProfileType } from "../../types/types";
-import { saveChangedProfileFormDataType, ThunkType } from "../../redux/profileReducer";
+import { saveChangedProfileFormDataType } from "../../redux/profileReducer";
 
 type ProfileProps = {
   profile: ProfileType | null;
@@ -11,9 +11,9 @@ type ProfileProps = {
   isOwner: boolean;
   myProfileId: number | null;
 
-  saveChangedProfile: (formData: saveChangedProfileFormDataType) => ThunkType;
-  saveAvatar: (file: any) => ThunkType;
-  updateUserStatus: (status: string) => ThunkType;
+  saveChangedProfile: (formData: saveChangedProfileFormDataType) => Promise<void>;
+  saveAvatar: (file: any) => Promise<void>;
+  updateUserStatus: (status: string) => Promise<void>;
 
 }
 

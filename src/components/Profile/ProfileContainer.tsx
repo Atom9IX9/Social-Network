@@ -7,9 +7,7 @@ import {
   updateUserStatus,
   saveAvatar,
   saveChangedProfile,
-  
   saveChangedProfileFormDataType,
-  ThunkType,
 } from "../../redux/profileReducer";
 import withRouter from "../../hoc/withRouter";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
@@ -28,11 +26,16 @@ type MapStateToProps = {
   status: string | null;
 };
 type MapDispatchToProps = {
-  updateUserStatus: (status: string) => ThunkType;
-  saveChangedProfile: (formData: saveChangedProfileFormDataType) => ThunkType;
-  saveAvatar: (file: any) => ThunkType;
-  getUserStatus: (userId: number, myProfileId?: number | null) => ThunkType;
-  getUserProfile: (userId: number, myProfileId?: number | null) => ThunkType;
+  updateUserStatus: (status: string) => Promise<void>;
+  saveChangedProfile: (
+    formData: saveChangedProfileFormDataType
+  ) => Promise<void>;
+  saveAvatar: (file: any) => Promise<void>;
+  getUserStatus: (userId: number, myProfileId?: number | null) => Promise<void>;
+  getUserProfile: (
+    userId: number,
+    myProfileId?: number | null
+  ) => Promise<void>;
 };
 type OwnProps = {
   router: any;
@@ -85,16 +88,13 @@ let mapStateToProps = (state: rootStateType): MapStateToProps => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    {
-      getUserProfile,
-      getUserStatus,
-      updateUserStatus,
-      saveAvatar,
-      saveChangedProfile,
-    }
-  ),
+  connect(mapStateToProps, {
+    getUserProfile,
+    getUserStatus,
+    updateUserStatus,
+    saveAvatar,
+    saveChangedProfile,
+  }),
   withRouter,
-  //withAuthRedirect
+  withAuthRedirect
 )(ProfileContainer);

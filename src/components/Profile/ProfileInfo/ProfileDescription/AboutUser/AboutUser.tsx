@@ -1,7 +1,14 @@
 import * as React from 'react';
+import { ProfileType } from '../../../../../types/types';
 import style from "../ProfileDescription.module.css";
 
-const AboutUser = ({ profile, toggleEditMode, isOwner }) => {
+type TAboutUserProps = {
+  profile: ProfileType;
+  toggleEditMode: () => void;
+  isOwner: boolean;
+}
+
+const AboutUser: React.FC<TAboutUserProps> = ({ profile, toggleEditMode, isOwner }) => {
   let contactLinks = Object.keys(profile.contacts).map((key) => {
     if (!profile.contacts[key]) return null;
     return <Contact  key={key} linkName={key} link={profile.contacts[key]} />;
@@ -25,8 +32,13 @@ const AboutUser = ({ profile, toggleEditMode, isOwner }) => {
   );
 };
 
-const Contact = ({ linkName, link }) => {
-  if (!link) return;
+type TContactProps = {
+  linkName: string;
+  link: string;
+}
+
+const Contact: React.FC<TContactProps> = ({ linkName, link }) => {
+  if (!link) return null;
 
   return (
     <div>

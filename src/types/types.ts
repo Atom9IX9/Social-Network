@@ -17,7 +17,7 @@ export type ProfileType = {
   lookingForAJob: boolean;
   lookingForAJobDescription: string;
   fullName: string;
-  //aboutMe: string;
+  aboutMe: string;
   contacts: ContactsType | any;
   photos: PhotosType;
 };
