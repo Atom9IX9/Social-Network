@@ -5,7 +5,7 @@ import {
   maxLengthCreator,
   minLengthCreator,
 } from "../../../../utils/validators";
-import { FormInput } from "../../../common/forms/FormInput";
+import { FormInput } from "../../../common/forms/FormControls";
 
 const minLength10 = minLengthCreator(10);
 const maxLength300 = maxLengthCreator(300);

@@ -2,7 +2,7 @@ import React from "react";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import { LoginFormDataValues } from "../../../../types/types";
 import { required } from "../../../../utils/validators";
-import { FormInput } from "../../forms/FormInput";
+import { FormInput } from "../../forms/FormControls";
 import { createForm } from "../../forms/createForm";
 import style from "./LoginForm.module.css";
 

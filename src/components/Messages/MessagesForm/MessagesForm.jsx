@@ -1,5 +1,5 @@
 import { Field, reduxForm } from "redux-form";
-import {FormInput} from "../../common/forms/FormInput";
+import {FormInput} from "../../common/forms/FormControls";
 import s from "./MessagesForm.module.css"
 
 const MessagesForm = (props) => {

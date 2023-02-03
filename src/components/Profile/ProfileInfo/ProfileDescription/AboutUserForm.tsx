@@ -5,7 +5,7 @@ import {
   minLengthCreator,
   required,
 } from "../../../../utils/validators";
-import { FormInput, FormTextarea } from "../../../common/forms/FormInput";
+import { FormInput, FormTextarea } from "../../../common/forms/FormControls";
 import { createForm } from "../../../common/forms/createForm";
 import style from "../ProfileInfo.module.css";
 import { ContactsType, ProfileType } from "../../../../types/types";
