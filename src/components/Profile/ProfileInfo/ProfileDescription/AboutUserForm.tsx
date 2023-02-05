@@ -9,6 +9,7 @@ import { FormInput, FormTextarea } from "../../../common/forms/FormControls";
 import { createForm } from "../../../common/forms/createForm";
 import style from "../ProfileInfo.module.css";
 import { ContactsType, ProfileType } from "../../../../types/types";
+import { SaveProfileDataType } from "../../../../redux/profileReducer";
 
 type TOwnProps = {
   profile: ProfileType;
@@ -16,6 +17,7 @@ type TOwnProps = {
 }
 
 type TAboutUserFormProps = InjectedFormProps<TAboutUserFormData, TOwnProps> & TOwnProps
+type SaveProfileDataTypeKeys = keyof SaveProfileDataType
 
 const AboutUserForm: React.FC<TAboutUserFormProps> = (props) => {  
   const maxLength20 = maxLengthCreator(20);
@@ -38,7 +40,7 @@ const AboutUserForm: React.FC<TAboutUserFormProps> = (props) => {
       <div className={style.formInp}>
         <label>
           <span className={style.labelText}>User name</span>
-          {createForm("fullName", FormInput, undefined, [
+          {createForm<SaveProfileDataTypeKeys>("fullName", FormInput, undefined, [
             required,
             maxLength20,
             minLength3,
@@ -48,20 +50,20 @@ const AboutUserForm: React.FC<TAboutUserFormProps> = (props) => {
       <div className={style.formInp}>
         <label>
           <span className={style.labelText}>About me</span>
-          {createForm("aboutMe", FormTextarea, undefined, [required])}
+          {createForm<SaveProfileDataTypeKeys>("aboutMe", FormTextarea, undefined, [required])}
         </label>
       </div>
       <div className={style.formInp}>
         <label className={style.LookingForAJob}>
           <span className={style.labelText}>Looking for a job</span>
-          {createForm("lookingForAJob", FormInput, undefined, [], "checkbox")}
+          {createForm<SaveProfileDataTypeKeys>("lookingForAJob", FormInput, undefined, [], "checkbox")}
         </label>
       </div>
       <div className={style.formInp}>
         <label>
           <span className={style.labelText}>Job description</span>
           <br />
-          {createForm("lookingForAJobDescription", FormTextarea, undefined, [
+          {createForm<SaveProfileDataTypeKeys>("lookingForAJobDescription", FormTextarea, undefined, [
             required,
           ])}
         </label>

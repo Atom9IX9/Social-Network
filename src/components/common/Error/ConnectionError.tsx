@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./ConnectionError.module.css";
 
-const ConnectionError = () => {
+const ConnectionError: React.FC = () => {
   return (
     <div className={style.error}>
       <span className={style.errorText}>ERROR</span>

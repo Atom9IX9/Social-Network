@@ -1,6 +1,6 @@
 import { InferActionsTypes, rootStateType } from "./reduxStore";
 import { ThunkAction } from "redux-thunk";
-import { PhotosType } from "./../types/types";
+import { ContactsType, PhotosType } from "./../types/types";
 import { ProfileType } from "../types/types";
 import { reset, stopSubmit } from "redux-form";
 import { profileAPI } from "../api/api";
@@ -181,6 +181,13 @@ export type saveChangedProfileFormDataType = {
   userId: number;
   ownerId: number;
 };
+export type SaveProfileDataType = {
+  fullName: string;
+  aboutMe: string;
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string;
+  contacts: ContactsType;
+}
 export const saveChangedProfile =
   (formData: ProfileType, ownerId: number, userId: number | null): ThunkType =>
   async (dispatch) => {

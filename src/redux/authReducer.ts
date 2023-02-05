@@ -30,7 +30,7 @@ export type InitialStateType = {
   email: string | null;
   login: string | null;
   isAuth: boolean;
-  userProfile: object | null;
+  userProfile: ProfileType | null;
   captchaImage: string | null;
 };
 const initialState: InitialStateType = {
