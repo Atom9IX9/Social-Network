@@ -1,4 +1,8 @@
+import { InferActionsTypes } from "./reduxStore";
+
 const TOGGLE_NAV = "TOGGLE_NAV";
+
+type contentReducerActionsTypes = InferActionsTypes<typeof actions>;
 
 export type InitialStateType = {
   isActiveNav: boolean;
@@ -7,7 +11,10 @@ let initialState: InitialStateType = {
   isActiveNav: false,
 };
 
-const contentReducer = (state = initialState, action: any) => {
+const contentReducer = (
+  state = initialState,
+  action: contentReducerActionsTypes
+) => {
   switch (action.type) {
     case TOGGLE_NAV:
       return {
@@ -19,15 +26,13 @@ const contentReducer = (state = initialState, action: any) => {
   }
 };
 
-type ToggleNavActionType = {
-  type: typeof TOGGLE_NAV;
-  isActive: boolean;
-}
-export let toggleNav = (isActive: boolean): ToggleNavActionType => {
-  return {
-    type: TOGGLE_NAV,
-    isActive,
-  };
+export const actions = {
+  toggleNav: (isActive: boolean) => {
+    return {
+      type: TOGGLE_NAV,
+      isActive,
+    } as const;
+  },
 };
 
 export default contentReducer;

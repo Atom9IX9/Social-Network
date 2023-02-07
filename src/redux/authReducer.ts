@@ -1,22 +1,16 @@
-import { rootStateType } from "./reduxStore";
+import { InferActionsTypes, rootStateType } from "./reduxStore";
 import { ThunkAction } from "redux-thunk";
 import { ProfileType } from "../types/types";
 import { stopSubmit } from "redux-form";
-import {
-  authAPI,
-  CaptchaResultCodes,
-  ResultCodes,
-  securityAPI,
-} from "../api/api";
+import { CaptchaResultCodes, ResultCodes } from "../api/api";
+import { securityAPI } from "../api/securityAPI";
+import { authAPI } from "../api/authAPI";
 
 const SET_USER_DATA = "SET_USER_DATA/AUTH_REDUCER";
 const SET_USER_PROFILE = "SET_USER_PROFILE/AUTH_REDUCER";
 const SET_CAPTCHA_IMAGE = "SET_CAPTCHA_IMAGE/AUTH_REDUCER";
 
-type AuthReducerActionTypes =
-  | SetUserDataActionType
-  | setCaptchaImageActionType
-  | SetUserProfileActionType
+type AuthReducerActionTypes = InferActionsTypes<typeof actions>;
 
 export type ThunkType = ThunkAction<
   Promise<void>,
@@ -34,12 +28,12 @@ export type InitialStateType = {
   captchaImage: string | null;
 };
 const initialState: InitialStateType = {
-  id: null,
-  email: null,
-  login: null,
+  id: null, // * owner id
+  email: null, // * owner email
+  login: null, // * owner login
   isAuth: false,
-  userProfile: null,
-  captchaImage: null,
+  userProfile: null, // * owner profile
+  captchaImage: null, // * captcha url
 };
 
 let authReducer = (
@@ -68,68 +62,57 @@ let authReducer = (
   }
 };
 
-type SetUserDataActionDataType = {
-  id: number | null;
-  email: string | null;
-  login: string | null;
-};
-type SetUserDataActionType = {
-  type: typeof SET_USER_DATA;
-  data: SetUserDataActionDataType;
-  isAuth: boolean;
-};
-export let setUserData = (
-  id: number | null,
-  email: string | null,
-  login: string | null,
-  isAuth: boolean
-): SetUserDataActionType => {
-  return {
-    type: SET_USER_DATA,
-    data: {
-      id,
-      email,
-      login,
-    },
-    isAuth,
-  };
-};
-
-type SetUserProfileActionType = {
-  type: typeof SET_USER_PROFILE;
-  profile: ProfileType;
-};
-export let setUserProfile = (
-  profile: ProfileType
-): SetUserProfileActionType => {
-  return {
-    type: SET_USER_PROFILE,
-    profile,
-  };
+export const actions = {
+  setUserData: (
+    id: number | null,
+    email: string | null,
+    login: string | null,
+    isAuth: boolean
+  ) => {
+    return {
+      type: SET_USER_DATA,
+      data: {
+        id,
+        email,
+        login,
+      },
+      isAuth,
+    } as const;
+  },
+  setUserProfile: (profile: ProfileType) => {
+    return {
+      type: SET_USER_PROFILE,
+      profile,
+    } as const;
+  },
+  setCaptchaImage: (captchaImage: string | null) => {
+    return {
+      type: SET_CAPTCHA_IMAGE,
+      captchaImage,
+    } as const;
+  },
 };
 
 export let getAuth = (): ThunkType => async (dispatch) => {
   const data = await authAPI.me();
   if (data.resultCode === ResultCodes.Success) {
     let { id, email, login } = data.data;
-    dispatch(setUserData(id, email, login, true));
+    dispatch(actions.setUserData(id, email, login, true));
   }
 };
-
-export let login =
-  (
-    email: string,
-    password: string,
-    rememberMe: boolean,
-    captcha: string | null
-  ): ThunkType =>
-  async (dispatch) => {
+export let login = (
+  email: string,
+  password: string,
+  rememberMe: boolean,
+  captcha: string | null
+): ThunkType => {
+  return async (dispatch) => {
     try {
       let data = await authAPI.login(email, password, rememberMe, captcha);
       let message = data.messages.length > 0 ? data.messages[0] : "Some error";
       if (data.resultCode === ResultCodes.Success) {
         dispatch(getAuth());
-        dispatch(setCaptchaImage(null));
+        dispatch(actions.setCaptchaImage(null));
       } else if (data.resultCode === CaptchaResultCodes.CaptchaIsRequired) {
         dispatch(getCaptchaUrl());
         // @ts-ignore
@@ -139,35 +122,21 @@ export let login =
         dispatch(stopSubmit("login", { _error: message }));
       }
     } catch (error: any) {
-      // @ts-ignore 
+      // @ts-ignore
       dispatch(stopSubmit("login", { _error: error.message }));
     }
   };
-
+};
 export let logout = (): ThunkType => async (dispatch) => {
   let data = await authAPI.logout();
   if (data.resultCode === ResultCodes.Success) {
-    dispatch(setUserData(null, null, null, false));
+    dispatch(actions.setUserData(null, null, null, false));
   }
 };
-
-type setCaptchaImageActionType = {
-  type: typeof SET_CAPTCHA_IMAGE;
-  captchaImage: string | null;
-};
-let setCaptchaImage = (
-  captchaImage: string | null
-): setCaptchaImageActionType => {
-  return {
-    type: SET_CAPTCHA_IMAGE,
-    captchaImage,
-  };
-};
-
 export let getCaptchaUrl = (): ThunkType => async (dispatch) => {
   let data = await securityAPI.getCaptcha();
   let captchaImage = data.url;
-  dispatch(setCaptchaImage(captchaImage));
+  dispatch(actions.setCaptchaImage(captchaImage));
 };
 
 export default authReducer;

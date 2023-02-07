@@ -3,7 +3,7 @@ import { ThunkAction } from "redux-thunk";
 import { ContactsType, PhotosType } from "./../types/types";
 import { ProfileType } from "../types/types";
 import { reset, stopSubmit } from "redux-form";
-import { profileAPI } from "../api/api";
+import { profileAPI } from "../api/profileAPI";
 import { updateArrayObj } from "../utils/objectHelpers";
 
 type ProfileReducerActionTypes = InferActionsTypes<typeof actions>;
@@ -34,8 +34,8 @@ const initialState: InitialStateType = {
     { postId: 4, text: "How're you?", likes: 11, liked: false },
     { postId: 5, text: "It's my last post(", likes: 1, liked: false },
   ],
-  profile: null,
-  status: "",
+  profile: null, // * selected user profile
+  status: "", // * selected user status
 };
 
 // prettier-ignore
@@ -187,7 +187,7 @@ export type SaveProfileDataType = {
   lookingForAJob: boolean;
   lookingForAJobDescription: string;
   contacts: ContactsType;
-}
+};
 export const saveChangedProfile =
   (formData: ProfileType, ownerId: number, userId: number | null): ThunkType =>
   async (dispatch) => {

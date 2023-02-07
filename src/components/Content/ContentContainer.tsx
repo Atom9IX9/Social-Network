@@ -1,9 +1,11 @@
 import { connect } from "react-redux";
 import Content from "./Content";
-import { toggleNav } from "../../redux/contentReducer";
+import { actions } from "../../redux/contentReducer";
 import { compose } from "redux";
 import { getIsActiveNav } from "../../redux/selectors";
 import { rootStateType } from "../../redux/reduxStore";
+
+const { toggleNav } = actions;
 
 let mapStateToProps = (state: rootStateType): TMapStateToProps => {
   return {

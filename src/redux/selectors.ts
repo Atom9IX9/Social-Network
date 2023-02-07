@@ -8,15 +8,15 @@ export const getAppInitialized = (state: rootStateType): boolean | string => {
 
 // * Users
 export const getStateUsers = (state: rootStateType): Array<UserType> => {
-  return state.usersPage.users;
+  return state.usersPage.users; // * get array of users
 };
 
 export const getStatePageSize = (state: rootStateType): number => {
-  return state.usersPage.pageSize;
+  return state.usersPage.pageSize; // * get count of users in one page
 };
 
 export const getStateTotalUsersCount = (state: rootStateType): number => {
-  return state.usersPage.totalItemsCount;
+  return state.usersPage.totalItemsCount; // * get total users count
 };
 
 export const getStateCurrentPage = (state: rootStateType): number => {
@@ -30,7 +30,7 @@ export const getStateIsFetching = (state: rootStateType): boolean => {
 export const getStateIsFollowRequest = (
   state: rootStateType
 ): Array<number> => {
-  return state.usersPage.isFollowRequest;
+  return state.usersPage.isFollowRequest; // * get array of users ids
 };
 
 // * Messages
@@ -50,7 +50,7 @@ export const getProfile = (state: rootStateType): ProfileType | null => {
 };
 
 export const getMyProfileId = (state: rootStateType): number | null => {
-  return state.auth.id;
+  return state.auth.id; // * get owner id
 };
 
 export const getProfileStatus = (state: rootStateType): string | null => {
@@ -59,5 +59,5 @@ export const getProfileStatus = (state: rootStateType): string | null => {
 
 // * all Content
 export const getIsActiveNav = (state: rootStateType): boolean => {
-  return state.allContent.isActiveNav;
+  return state.allContent.isActiveNav; 
 };

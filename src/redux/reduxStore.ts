@@ -29,7 +29,7 @@ type PropsTypes<T> = T extends {[key: string]: infer U} ? U : never;
 export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropsTypes<T>>
 
 // @ts-ignore
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // ? fn compose
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
 export type rootReducerType = typeof store.dispatch;

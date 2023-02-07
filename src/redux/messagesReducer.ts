@@ -1,10 +1,10 @@
 import { ThunkAction } from "redux-thunk";
 import { reset } from "redux-form";
-import { rootStateType } from "./reduxStore";
+import { InferActionsTypes, rootStateType } from "./reduxStore";
 
 const ADD_MESSAGE = "ADD-MESSAGE";
 
-type MessagesReducerActionTypes = AddNewMessageActionType;
+type MessagesReducerActionTypes = InferActionsTypes<typeof actions>;
 
 type ThunkType = ThunkAction<
   void,
@@ -58,27 +58,20 @@ let messagesReducer = (
   }
 };
 
-type AddNewMessageActionType = {
-  type: typeof ADD_MESSAGE;
-  message: string;
-  isMy: boolean;
-};
-export const addNewMessage = (
-  message: string,
-  isMy: boolean
-): AddNewMessageActionType => {
-  return { type: ADD_MESSAGE, message, isMy };
+export const actions = {
+  addNewMessage: (message: string, isMy: boolean) => {
+    return { type: ADD_MESSAGE, message, isMy } as const;
+  },
 };
 
 type FormDataType = { newMessage: string };
-export const addMessageFromForm =
-  (formData: FormDataType): ThunkType =>
-  (dispatch) => {
+export const addMessageFromForm = (formData: FormDataType): ThunkType => {
+  return (dispatch) => {
     if (formData.newMessage) {
-      dispatch(addNewMessage(formData.newMessage, true));
+      dispatch(actions.addNewMessage(formData.newMessage, true));
       // @ts-ignore
       dispatch(reset("messages"));
     }
   };
-
+};
 export default messagesReducer;

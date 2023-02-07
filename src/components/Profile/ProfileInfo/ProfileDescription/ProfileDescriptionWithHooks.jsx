@@ -16,7 +16,7 @@ const ProfileDescriptionWithHooks = (props) => {
 
   const onSubmit = (FormData) => {
     props
-      .saveChangedProfile( FormData, props.ownerId, null )
+      .saveChangedProfile(FormData, props.ownerId, null)
       .then(() => toggleEditMode());
   };
 
@@ -37,9 +37,9 @@ const ProfileDescriptionWithHooks = (props) => {
 
       {editMode ? (
         <AboutUserForm
+          initialValues={props.profile}
           onSubmit={onSubmit}
           profile={props.profile}
-          initialValues={props.profile}
         />
       ) : (
         <AboutUser
