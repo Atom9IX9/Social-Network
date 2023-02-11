@@ -7,20 +7,6 @@ import { Navigate } from "react-router-dom";
 import { rootStateType } from "../../../redux/reduxStore";
 import { LoginFormDataValues } from "../../../types/types";
 
-type MapStateToPropsType = {
-  isAuth: boolean;
-  captchaImage: string | null;
-};
-type MapDispatchToPropsType = {
-  login: (
-    email: string,
-    password: string,
-    rememberMe: boolean,
-    captcha: string | null
-  ) => Promise<void>
-};
-type LoginProps = MapStateToPropsType & MapDispatchToPropsType;
-
 const Login: React.FC<LoginProps> = ({ login, isAuth, captchaImage }) => {
   const onSubmit = (formData: LoginFormDataValues) => {
     login(
@@ -49,4 +35,23 @@ let mapStateToProps = (state: rootStateType) => {
   return { isAuth: state.auth.isAuth, captchaImage: state.auth.captchaImage };
 };
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect<
+  MapStateToPropsType,
+  MapDispatchToPropsType,
+  {},
+  rootStateType
+>(mapStateToProps, { login })(Login);
+
+type MapStateToPropsType = {
+  isAuth: boolean;
+  captchaImage: string | null;
+};
+type MapDispatchToPropsType = {
+  login: (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha: string | null
+  ) => void;
+};
+type LoginProps = MapStateToPropsType & MapDispatchToPropsType;

@@ -11,9 +11,9 @@ type ProfileProps = {
   isOwner: boolean;
   myProfileId: number | null;
 
-  saveChangedProfile: (formData: saveChangedProfileFormDataType) => Promise<void>;
-  saveAvatar: (file: any) => Promise<void>;
-  updateUserStatus: (status: string) => Promise<void>;
+  saveChangedProfile: (formData: saveChangedProfileFormDataType) => void
+  saveAvatar: (file: File) => void;
+  updateUserStatus: (status: string) => void;
 
 }
 

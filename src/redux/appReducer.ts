@@ -1,24 +1,8 @@
-import { InferActionsTypes, rootStateType } from "./reduxStore";
-import { ThunkAction } from "redux-thunk";
+import { InferActionsTypes, ThunkType } from "./reduxStore";
 import { getAuth } from "./authReducer";
 
-const SET_INITIALIZED = "app_REDUCER_SET_INITIALIZED";
-const SET_INITIALIZED_ERROR = "app_REDUCER_SET_INITIALIZED_ERROR";
-
-type AppReducerActionTypes = InferActionsTypes<typeof actions>;
-
-type ThunkType = ThunkAction<
-  void,
-  rootStateType,
-  unknown,
-  AppReducerActionTypes
->;
-
-export type InitialStateType = {
-  initialized: boolean | string;
-};
-const initialState: InitialStateType = {
-  initialized: false,
+const initialState = {
+  initialized: false as boolean | string,
 };
 
 const appReducer = (
@@ -26,12 +10,12 @@ const appReducer = (
   action: AppReducerActionTypes
 ): InitialStateType => {
   switch (action.type) {
-    case SET_INITIALIZED:
+    case "SET_INITIALIZED_SUCCESS/appReducer":
       return {
         ...state,
         initialized: true,
       };
-    case SET_INITIALIZED_ERROR:
+    case "SET_INITIALIZED_ERROR/appReducer":
       return {
         ...state,
         initialized: action.error,
@@ -44,18 +28,18 @@ const appReducer = (
 export const actions = {
   setInitializedSuccess: () => {
     return {
-      type: SET_INITIALIZED,
+      type: "SET_INITIALIZED_SUCCESS/appReducer",
     } as const;
   },
   setInitializedError: (error: string) => {
     return {
-      type: SET_INITIALIZED_ERROR,
+      type: "SET_INITIALIZED_ERROR/appReducer",
       error,
     } as const;
   },
 };
 
-export const initialize = (): ThunkType => (dispatch) => {
+export const initialize = (): appThunkType => (dispatch) => {
   let promise = dispatch(getAuth());
   Promise.all([promise])
     .then(() => {
@@ -68,3 +52,9 @@ export const initialize = (): ThunkType => (dispatch) => {
 };
 
 export default appReducer;
+
+
+export type InitialStateType = typeof initialState;
+type appThunkType = ThunkType<AppReducerActionTypes, void>
+type AppReducerActionTypes = InferActionsTypes<typeof actions>;
+

@@ -9,7 +9,7 @@ import {
   saveChangedProfile,
   saveChangedProfileFormDataType,
 } from "../../redux/profileReducer";
-import withRouter from "../../hoc/withRouter";
+import withRouter, { Router } from "../../hoc/withRouter";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
 import {
@@ -20,45 +20,17 @@ import {
 import { ProfileType } from "../../types/types";
 import { rootStateType } from "../../redux/reduxStore";
 
-type MapStateToProps = {
-  profile: ProfileType | null;
-  myProfileId: number | null;
-  status: string | null;
-};
-type MapDispatchToProps = {
-  updateUserStatus: (status: string) => Promise<void>;
-  saveChangedProfile: (
-    formData: saveChangedProfileFormDataType
-  ) => Promise<void>;
-  saveAvatar: (file: any) => Promise<void>;
-  getUserStatus: (userId: number, myProfileId?: number | null) => Promise<void>;
-  getUserProfile: (
-    userId: number,
-    myProfileId?: number | null
-  ) => Promise<void>;
-};
-type OwnProps = {
-  router: any;
-};
-type ProfileContainerProps = OwnProps & MapStateToProps & MapDispatchToProps;
-
 class ProfileContainer extends React.Component<ProfileContainerProps> {
   updateProfile = () => {
-    this.props.getUserProfile(
-      this.props.router.params.userId,
-      this.props.myProfileId
-    );
-    this.props.getUserStatus(
-      this.props.router.params.userId,
-      this.props.myProfileId
-    );
+    this.props.getUserProfile(this.props.router.params.userId);
+    this.props.getUserStatus(this.props.router.params.userId);
   };
 
   componentDidMount = () => {
     this.updateProfile();
   };
 
-  componentDidUpdate = (prevProps: any, prevState: any) => {
+  componentDidUpdate = (prevProps: ProfileContainerProps) => {
     if (prevProps.router.params.userId !== this.props.router.params.userId) {
       this.updateProfile();
     }
@@ -87,7 +59,7 @@ let mapStateToProps = (state: rootStateType): MapStateToProps => {
   };
 };
 
-export default compose(
+export default compose<React.ComponentType>(
   connect(mapStateToProps, {
     getUserProfile,
     getUserStatus,
@@ -98,3 +70,22 @@ export default compose(
   withRouter,
   withAuthRedirect
 )(ProfileContainer);
+
+type MapStateToProps = {
+  profile: ProfileType | null;
+  myProfileId: number | null;
+  status: string | null;
+};
+type MapDispatchToProps = {
+  updateUserStatus: (status: string) => void;
+  saveChangedProfile: (
+    formData: saveChangedProfileFormDataType
+  ) => void;
+  saveAvatar: (file: File) => void;
+  getUserStatus: (userId: number) => void;
+  getUserProfile: (userId: number | null) => void;
+};
+type OwnProps = {
+  router: Router<{ userId: number }>;
+};
+type ProfileContainerProps = OwnProps & MapStateToProps & MapDispatchToProps;

@@ -22,7 +22,7 @@ export const profileAPI = {
     const response = await instance.put("profile/status", { status: status });
     return response.data;
   },
-  saveAvatar: async (file: any) => {
+  saveAvatar: async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
     const response = await instance.put<SaveAvatarResponse>(

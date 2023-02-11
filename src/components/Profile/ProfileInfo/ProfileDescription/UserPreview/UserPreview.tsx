@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEventHandler } from "react";
 import userDefaultPhoto from "../../../../../assets/img/defaultUserAv.jpg";
 import style from "../ProfileDescription.module.css";
 
@@ -6,7 +6,7 @@ type UserPreviewProps = {
   fullName: string;
   userProfilePhoto: string | null;
   isOwner: boolean;
-  saveAvatar: (file: any) => void;
+  saveAvatar: (file: File) => void;
 };
 
 const UserPreview: React.FC<UserPreviewProps> = ({
@@ -15,8 +15,8 @@ const UserPreview: React.FC<UserPreviewProps> = ({
   isOwner,
   saveAvatar,
 }) => {
-  let onFileSelected = (e: any) => {
-    if (e.target.files.length) {
+  let onFileSelected: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (e.target.files?.length) {
       saveAvatar(e.target.files[0]);
     }
   };

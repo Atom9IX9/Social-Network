@@ -1,32 +1,11 @@
-import { InferActionsTypes, rootStateType } from "./reduxStore";
-import { ThunkAction } from "redux-thunk";
+import { InferActionsTypes, ThunkType } from "./reduxStore";
 import { ContactsType, PhotosType } from "./../types/types";
 import { ProfileType } from "../types/types";
-import { reset, stopSubmit } from "redux-form";
+import { FormAction, reset, stopSubmit } from "redux-form";
 import { profileAPI } from "../api/profileAPI";
 import { updateArrayObj } from "../utils/objectHelpers";
 
-type ProfileReducerActionTypes = InferActionsTypes<typeof actions>;
-
-export type ThunkType = ThunkAction<
-  Promise<void>,
-  rootStateType,
-  unknown,
-  ProfileReducerActionTypes
->;
-
-export type PostType = {
-  postId: number;
-  text: string;
-  likes: number;
-  liked: boolean;
-};
-export type InitialStateType = {
-  posts: Array<PostType>;
-  profile: ProfileType | null;
-  status: string | null;
-};
-const initialState: InitialStateType = {
+const initialState = {
   posts: [
     { postId: 1, text: "It's my first post!", likes: 10, liked: false },
     { postId: 2, text: "It's my second post!", likes: 5, liked: false },
@@ -34,14 +13,14 @@ const initialState: InitialStateType = {
     { postId: 4, text: "How're you?", likes: 11, liked: false },
     { postId: 5, text: "It's my last post(", likes: 1, liked: false },
   ],
-  profile: null, // * selected user profile
+  profile: null as ProfileType | null, // * selected user profile
   status: "", // * selected user status
 };
 
 // prettier-ignore
 let profileReducer = (state = initialState, action: ProfileReducerActionTypes): InitialStateType => {
   switch (action.type) {
-    case "ADD_POST":
+    case "ADD_POST/profileReducer":
       return {
         ...state,
         posts: [
@@ -54,7 +33,7 @@ let profileReducer = (state = initialState, action: ProfileReducerActionTypes): 
           },
         ],
       };
-    case " ADD_LIKE":
+    case " ADD_LIKE/profileReducer":
       return {
         ...state,
         posts: updateArrayObj<PostType, number>(
@@ -67,17 +46,17 @@ let profileReducer = (state = initialState, action: ProfileReducerActionTypes): 
           }
         ),
       };
-    case "SET_USER_PROFILE":
+    case "SET_USER_PROFILE/profileReducer":
       return {
         ...state,
         profile: action.profile,
       };
-    case "SET_STATUS":
+    case "SET_STATUS/profileReducer":
       return {
         ...state,
         status: action.status,
       };
-    case "SAVE_PHOTOS_SUCCESS":
+    case "SAVE_PHOTOS_SUCCESS/profileReducer":
       if (!state.profile) return state;
       return {
         ...state,
@@ -90,43 +69,43 @@ let profileReducer = (state = initialState, action: ProfileReducerActionTypes): 
 
 export const actions = {
   addPost: (text: string) => {
-    return { type: "ADD_POST", text } as const;
+    return { type: "ADD_POST/profileReducer", text } as const;
   },
   addLike: (id: number, likes: number) => {
-    return { type: " ADD_LIKE", id, likes: likes + 1 } as const;
+    return { type: " ADD_LIKE/profileReducer", id, likes: likes + 1 } as const;
   },
   saveAvatarSuccess: (photos: PhotosType) => {
-    return { type: "SAVE_PHOTOS_SUCCESS", photos } as const;
+    return { type: "SAVE_PHOTOS_SUCCESS/profileReducer", photos } as const;
   },
-  setUserProfile: (profile: ProfileType) => {
+  setUserProfile: (profile: ProfileType | null) => {
     return {
-      type: "SET_USER_PROFILE",
+      type: "SET_USER_PROFILE/profileReducer",
       profile,
     } as const;
   },
   setStatus: (status: string) => {
     return {
-      type: "SET_STATUS",
+      type: "SET_STATUS/profileReducer",
       status,
     } as const;
   },
 };
 
 // prettier-ignore
-export const getUserProfile = (userId: number | null, myProfileId: number): ThunkType => {
-  return async (dispatch) => {
-    let data = await profileAPI.getProfile(userId, myProfileId);
+export const getUserProfile = (userId: number | null): ProfileThunkType => {
+  return async (dispatch, getState) => {
+    let data = await profileAPI.getProfile(userId, getState().auth.id as number);
     dispatch(actions.setUserProfile(data));
   };
 };
 // prettier-ignore
-export const getUserStatus = (userId: number, myProfileId: number): ThunkType => {
-  return async (dispatch) => {
-    let data = await profileAPI.getStatus(userId, myProfileId);
+export const getUserStatus = (userId: number): ProfileThunkType => {
+  return async (dispatch, getState) => {
+    let data = await profileAPI.getStatus(userId, getState().auth.id as number);
     dispatch(actions.setStatus(data));
   };
 };
-export const updateUserStatus = (status: string): ThunkType => {
+export const updateUserStatus = (status: string): ProfileThunkType => {
   return async (dispatch) => {
     let data = await profileAPI.updateStatus(status);
     if (data.resultCode === 0) {
@@ -134,7 +113,7 @@ export const updateUserStatus = (status: string): ThunkType => {
     }
   };
 };
-export const saveAvatar = (file: any): ThunkType => {
+export const saveAvatar = (file: File): ProfileThunkType => {
   return async (dispatch) => {
     let data = await profileAPI.saveAvatar(file);
     if (data.resultCode === 0) {
@@ -142,21 +121,12 @@ export const saveAvatar = (file: any): ThunkType => {
     }
   };
 };
-export type addPostFromFormFormDataType = {
-  newPostText: string;
-};
-type AddPostFromFormThunkType = ThunkAction<
-  void,
-  rootStateType,
-  unknown,
-  ProfileReducerActionTypes
->;
+
 // prettier-ignore
 export const addPostFromForm = (formData: addPostFromFormFormDataType): AddPostFromFormThunkType => {
   return (dispatch) => {
     if (formData.newPostText) {
       dispatch(actions.addPost(formData.newPostText));
-      // @ts-ignore //! should delete ignore
       dispatch(reset("myPosts"));
     }
   }
@@ -176,27 +146,16 @@ const __getErrorsFromMessages = (messages: Array<string>) => {
 
   return { ...errors };
 };
-export type saveChangedProfileFormDataType = {
-  formData: ProfileType;
-  userId: number;
-  ownerId: number;
-};
-export type SaveProfileDataType = {
-  fullName: string;
-  aboutMe: string;
-  lookingForAJob: boolean;
-  lookingForAJobDescription: string;
-  contacts: ContactsType;
-};
-export const saveChangedProfile =
-  (formData: ProfileType, ownerId: number, userId: number | null): ThunkType =>
-  async (dispatch) => {
+export const saveChangedProfile = (
+  formData: ProfileType,
+  userId: number | null
+): ProfileThunkType => {
+  return async (dispatch, getState) => {
     let data = await profileAPI.saveChangedProfile(formData);
     if (data.resultCode === 0) {
-      dispatch(getUserProfile(userId, ownerId));
+      dispatch(getUserProfile(userId));
     } else {
       dispatch(
-        // @ts-ignore //! should delete ignore
         stopSubmit("aboutUserForm", {
           contacts: __getErrorsFromMessages(data.messages),
         })
@@ -204,5 +163,32 @@ export const saveChangedProfile =
       return Promise.reject();
     }
   };
+};
 
 export default profileReducer;
+
+type ProfileReducerActionTypes = InferActionsTypes<typeof actions>;
+export type ProfileThunkType = ThunkType<ProfileReducerActionTypes | FormAction>
+export type PostType = {
+  postId: number;
+  text: string;
+  likes: number;
+  liked: boolean;
+};
+export type InitialStateType = typeof initialState;
+export type SaveProfileDataType = {
+  fullName: string;
+  aboutMe: string;
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string;
+  contacts: ContactsType;
+};
+export type addPostFromFormFormDataType = {
+  newPostText: string;
+};
+type AddPostFromFormThunkType = ThunkType<ProfileReducerActionTypes | FormAction, void>
+export type saveChangedProfileFormDataType = {
+  formData: ProfileType;
+  userId: number;
+  ownerId: number;
+};

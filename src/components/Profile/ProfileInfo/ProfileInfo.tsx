@@ -5,13 +5,13 @@ import ProfileDescriptionWithHooks from "./ProfileDescription/ProfileDescription
 
 type TProfileInfoProps = {
   profile: ProfileType | null;
-  updateUserStatus: (status: string) => Promise<void>
+  updateUserStatus: (status: string) => void;
   status: string | null;
   isOwner: boolean;
-  saveAvatar: (file: any) => Promise<void>;
-  saveChangedProfile: (formData: saveChangedProfileFormDataType) => Promise<void>;
+  saveAvatar: (file: File) => void;
+  saveChangedProfile: (formData: saveChangedProfileFormDataType) => void;
   ownerId: number | null;
-}
+};
 
 const ProfileInfo: React.FC<TProfileInfoProps> = ({
   profile,

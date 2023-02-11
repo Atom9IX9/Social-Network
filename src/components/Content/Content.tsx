@@ -9,11 +9,11 @@ import Login from "../common/Login/Login";
 import withSuspense from "../../hoc/withSuspense";
 
 const MessagesContainer = withSuspense(
-  React.lazy<any>(() => import("../Messages/MessagesContainer"))
+  React.lazy<React.ComponentType>(() => import("../Messages/MessagesContainer"))
 );
 
 const ProfileContainer = withSuspense(
-  React.lazy<any>(() => import("../Profile/ProfileContainer"))
+  React.lazy<React.ComponentType>(() => import("../Profile/ProfileContainer"))
 );
 
 type TContentProps = {
@@ -43,7 +43,7 @@ const Content: React.FC<TContentProps> = ({ isActiveNav, toggleNav }) => {
         <Route path="/news" element={<News />} />
         <Route path="/music" element={<Music />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/users" element={<UsersContainer pageTitle="Users" />} />
+        <Route path="/users" element={<UsersContainer />} />
         <Route path="/login" element={<Login />} />
         <Route path="/messages/*" element={<MessagesContainer />} />
         <Route path="/profile/:userId" element={<ProfileContainer />} />

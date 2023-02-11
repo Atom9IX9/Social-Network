@@ -18,9 +18,8 @@
 }
 
 .errorText {
-  position: absolute;
-  right: 200px;
-  top: 20px;
+  text-align: center;
+  width: 100%;
 
   font-size: 60px;
   font-weight: 600;
@@ -28,7 +27,6 @@
 }
 
 .round1 {
-
   background: #262626;
   color: #81b441;
 
@@ -71,4 +69,60 @@
   height: 200px;
 
   z-index: 1;
+}
+
+@media screen and (width<415px) {
+  .errorText {
+    position: absolute;
+    left: 30%;
+    font-size: 40px;
+    font-weight: 600;
+    color: #700000;
+  }
+  .round {
+    position: absolute;
+    font-size: 30px;
+  }
+  .round1 {
+    background: #262626;
+    color: #81b441;
+
+    top: 200px;
+    left: 80px;
+
+    width: 200px;
+    height: 200px;
+
+    z-index: 0;
+  }
+
+  .round2 {
+    background: #81b441;
+    color: #262626;
+
+    top: 300px;
+    left: 30px;
+
+    border-radius: 50%;
+
+    width: 300px;
+    height: 300px;
+
+    z-index: -1;
+  }
+
+  .round3 {
+    background: #700000;
+    color: #ffffff;
+
+    top: 150px;
+    left: 130px;
+
+    border-radius: 50%;
+
+    width: 100px;
+    height: 100px;
+
+    z-index: 1;
+  }
 }

@@ -1,10 +1,4 @@
-export type SidebarFriendType = { name: string; id: number }
-export type SidebarLinkType = { path: string; linkName: string; linkId: number }
-export type InitialStateType = {
-  friends: Array<SidebarFriendType>;
-  links: Array<SidebarLinkType>;
-};
-let initialState: InitialStateType = {
+let initialState = {
   friends: [
     { name: "Dima", id: 1 },
     { name: "Mom", id: 2 },
@@ -20,11 +14,16 @@ let initialState: InitialStateType = {
   ],
 };
 
-let sidebarReducer = (state = initialState, action: any): InitialStateType => {
-  switch (action.type) {
-    default:
-      return state;
-  }
+let sidebarReducer = (state = initialState): InitialStateType => {
+  return state
 };
 
 export default sidebarReducer;
+
+export type InitialStateType = typeof initialState;
+export type SidebarFriendType = { name: string; id: number };
+export type SidebarLinkType = {
+  path: string;
+  linkName: string;
+  linkId: number;
+};

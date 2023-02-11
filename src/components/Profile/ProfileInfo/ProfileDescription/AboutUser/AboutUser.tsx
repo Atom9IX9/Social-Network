@@ -1,18 +1,30 @@
-import * as React from 'react';
-import { ProfileType } from '../../../../../types/types';
+import * as React from "react";
+import { ContactsType, ProfileType } from "../../../../../types/types";
 import style from "../ProfileDescription.module.css";
 
 type TAboutUserProps = {
   profile: ProfileType;
   toggleEditMode: () => void;
   isOwner: boolean;
-}
+};
 
-const AboutUser: React.FC<TAboutUserProps> = ({ profile, toggleEditMode, isOwner }) => {
-  let contactLinks = Object.keys(profile.contacts).map((key) => {
-    if (!profile.contacts[key]) return null;
-    return <Contact  key={key} linkName={key} link={profile.contacts[key]} />;
-  }).filter(c => c !== null);
+const AboutUser: React.FC<TAboutUserProps> = ({
+  profile,
+  toggleEditMode,
+  isOwner,
+}) => {
+  let contactLinks = Object.keys(profile.contacts)
+    .map((key) => {
+      if (!profile.contacts[key as keyof ContactsType]) return null;
+      return (
+        <Contact
+          key={key}
+          linkName={key}
+          link={profile.contacts[key as keyof ContactsType]}
+        />
+      );
+    })
+    .filter((c) => c !== null);
 
   return (
     <>
@@ -34,15 +46,18 @@ const AboutUser: React.FC<TAboutUserProps> = ({ profile, toggleEditMode, isOwner
 
 type TContactProps = {
   linkName: string;
-  link: string;
-}
+  link: string | null;
+};
 
 const Contact: React.FC<TContactProps> = ({ linkName, link }) => {
   if (!link) return null;
 
   return (
     <div>
-      <span>{linkName}</span>: <a href={link} target="_blank" rel="noreferrer"><span>{link}</span></a>
+      <span>{linkName}</span>:{" "}
+      <a href={link} target="_blank" rel="noreferrer">
+        <span>{link}</span>
+      </a>
     </div>
   );
 };

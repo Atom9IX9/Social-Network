@@ -18,28 +18,6 @@ import { UserType } from "../../types/types";
 import { rootStateType } from "../../redux/reduxStore";
 import style from "./Users.module.css"
 
-type MapDispatchToPropsType = {
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
-  getUsers: (currentPage: number, pageSize: number) => void;
-};
-type MapStateToPropsType = {
-  currentPage: number;
-  pageSize: number;
-  isFetching: boolean;
-  totalItemsCount: number;
-  users: Array<UserType>;
-  isFollowing: Array<number>;
-  ownerId: number | null;
-};
-
-type OwnProps = {
-  pageTitle: string;
-}
-
-type UsersContainerComponentProps = MapStateToPropsType &
-  MapDispatchToPropsType & OwnProps;
-
 class UsersContainerComponent extends React.Component<UsersContainerComponentProps> {
   componentDidMount() {
     this.props.getUsers(this.props.currentPage, this.props.pageSize);
@@ -52,7 +30,7 @@ class UsersContainerComponent extends React.Component<UsersContainerComponentPro
   render() {
     return (
       <>
-        <h2 className={style.pageTitle}>{ this.props.pageTitle }</h2>
+        <h2 className={style.pageTitle}>Users</h2>
         {this.props.isFetching ? (
           <Preloader />
         ) : (
@@ -85,8 +63,8 @@ let mapStateToProps = (state: rootStateType): MapStateToPropsType => {
   };
 };
 
-export default compose<any>(
-  connect<MapStateToPropsType, MapDispatchToPropsType, OwnProps, rootStateType>(
+export default compose<React.ComponentType>(
+  connect<MapStateToPropsType, MapDispatchToPropsType, {}, rootStateType>(
     mapStateToProps,
     {
       getUsers,
@@ -96,3 +74,20 @@ export default compose<any>(
   ),
   withAuthRedirect
 )(UsersContainerComponent);
+
+type MapDispatchToPropsType = {
+  follow: (userId: number) => void;
+  unfollow: (userId: number) => void;
+  getUsers: (currentPage: number, pageSize: number) => void;
+};
+type MapStateToPropsType = {
+  currentPage: number;
+  pageSize: number;
+  isFetching: boolean;
+  totalItemsCount: number;
+  users: Array<UserType>;
+  isFollowing: Array<number>;
+  ownerId: number | null;
+};
+type UsersContainerComponentProps = MapStateToPropsType &
+  MapDispatchToPropsType;

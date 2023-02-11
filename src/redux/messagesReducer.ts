@@ -1,25 +1,7 @@
-import { ThunkAction } from "redux-thunk";
-import { reset } from "redux-form";
-import { InferActionsTypes, rootStateType } from "./reduxStore";
+import { FormAction, reset } from "redux-form";
+import { InferActionsTypes, ThunkType } from "./reduxStore";
 
-const ADD_MESSAGE = "ADD-MESSAGE";
-
-type MessagesReducerActionTypes = InferActionsTypes<typeof actions>;
-
-type ThunkType = ThunkAction<
-  void,
-  rootStateType,
-  unknown,
-  MessagesReducerActionTypes
->;
-
-export type MessageType = { messageId: number; message: string; isMy: boolean };
-export type ContactType = { contactId: number; name: string };
-export type InitialStateType = {
-  contacts: Array<ContactType>;
-  messages: Array<MessageType>;
-};
-let initialState: InitialStateType = {
+let initialState = {
   contacts: [
     { contactId: 1, name: "Dima" },
     { contactId: 2, name: "Danylo" },
@@ -41,7 +23,7 @@ let messagesReducer = (
   action: MessagesReducerActionTypes
 ): InitialStateType => {
   switch (action.type) {
-    case ADD_MESSAGE:
+    case "ADD-MESSAGE/messagesReducer":
       return {
         ...state,
         messages: [
@@ -60,18 +42,29 @@ let messagesReducer = (
 
 export const actions = {
   addNewMessage: (message: string, isMy: boolean) => {
-    return { type: ADD_MESSAGE, message, isMy } as const;
+    return { type: "ADD-MESSAGE/messagesReducer", message, isMy } as const;
   },
 };
 
-type FormDataType = { newMessage: string };
-export const addMessageFromForm = (formData: FormDataType): ThunkType => {
+export const addMessageFromForm = (
+  formData: MessageFormDataType
+): MessagesThunkType => {
   return (dispatch) => {
     if (formData.newMessage) {
       dispatch(actions.addNewMessage(formData.newMessage, true));
-      // @ts-ignore
       dispatch(reset("messages"));
     }
   };
 };
+
 export default messagesReducer;
+
+export type InitialStateType = typeof initialState;
+type MessagesReducerActionTypes = InferActionsTypes<typeof actions>;
+type MessagesThunkType = ThunkType<
+  MessagesReducerActionTypes | FormAction,
+  void
+>;
+export type MessageFormDataType = { newMessage: string };
+export type MessageType = { messageId: number; message: string; isMy: boolean };
+export type ContactType = { contactId: number; name: string };

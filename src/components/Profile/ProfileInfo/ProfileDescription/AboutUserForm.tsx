@@ -14,12 +14,13 @@ import { SaveProfileDataType } from "../../../../redux/profileReducer";
 type TOwnProps = {
   profile: ProfileType;
   toggleEditMode: () => void;
-}
+};
 
-type TAboutUserFormProps = InjectedFormProps<TAboutUserFormData, TOwnProps> & TOwnProps
-type SaveProfileDataTypeKeys = keyof SaveProfileDataType
+type TAboutUserFormProps = InjectedFormProps<TAboutUserFormData, TOwnProps> &
+  TOwnProps;
+type SaveProfileDataTypeKeys = keyof SaveProfileDataType;
 
-const AboutUserForm: React.FC<TAboutUserFormProps> = (props) => {  
+const AboutUserForm: React.FC<TAboutUserFormProps> = (props) => {
   const maxLength20 = maxLengthCreator(20);
   const minLength3 = minLengthCreator(3);
   let contactInputs = Object.keys(props.profile.contacts)
@@ -40,32 +41,47 @@ const AboutUserForm: React.FC<TAboutUserFormProps> = (props) => {
       <div className={style.formInp}>
         <label>
           <span className={style.labelText}>User name</span>
-          {createForm<SaveProfileDataTypeKeys>("fullName", FormInput, undefined, [
-            required,
-            maxLength20,
-            minLength3,
-          ])}
+          {createForm<SaveProfileDataTypeKeys>(
+            "fullName",
+            FormInput,
+            undefined,
+            [required, maxLength20, minLength3]
+          )}
         </label>
       </div>
       <div className={style.formInp}>
         <label>
           <span className={style.labelText}>About me</span>
-          {createForm<SaveProfileDataTypeKeys>("aboutMe", FormTextarea, undefined, [required])}
+          {createForm<SaveProfileDataTypeKeys>(
+            "aboutMe",
+            FormTextarea,
+            undefined,
+            [required]
+          )}
         </label>
       </div>
       <div className={style.formInp}>
         <label className={style.LookingForAJob}>
           <span className={style.labelText}>Looking for a job</span>
-          {createForm<SaveProfileDataTypeKeys>("lookingForAJob", FormInput, undefined, [], "checkbox")}
+          {createForm<SaveProfileDataTypeKeys>(
+            "lookingForAJob",
+            FormInput,
+            undefined,
+            [],
+            "checkbox"
+          )}
         </label>
       </div>
       <div className={style.formInp}>
         <label>
           <span className={style.labelText}>Job description</span>
           <br />
-          {createForm<SaveProfileDataTypeKeys>("lookingForAJobDescription", FormTextarea, undefined, [
-            required,
-          ])}
+          {createForm<SaveProfileDataTypeKeys>(
+            "lookingForAJobDescription",
+            FormTextarea,
+            undefined,
+            [required]
+          )}
         </label>
       </div>
       <div className={style.contacts}>{contactInputs}</div>
@@ -85,7 +101,7 @@ type TAboutUserFormData = {
   lookingForAJob: boolean;
   lookingForAJobDescription: string;
   contacts: ContactsType;
-}
+};
 
 const AboutUserFormReduxForm = reduxForm<TAboutUserFormData, TOwnProps>({
   form: "aboutUserForm",
