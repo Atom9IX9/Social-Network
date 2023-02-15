@@ -23,7 +23,6 @@ const Paginator: React.FC<PaginatorProps> = ({
       (number) => number >= currentPage - 7 && number < currentPage + 7
     );
   }
-
   // * Set 1 as first child in pagesNumbers
   pagesNumbers = [
     pagesNumbers[0] !== 1 ? "1... " : "",
@@ -32,7 +31,6 @@ const Paginator: React.FC<PaginatorProps> = ({
       ? ` ...${pagesCount}`
       : "",
   ];
-
   let pages = pagesNumbers.map((p) => {
     return (
       <span
@@ -51,8 +49,8 @@ const Paginator: React.FC<PaginatorProps> = ({
         {p}
       </span>
     );
-  });
-
+  });  
+  if (pages[pages.length - 1].key === " ...0") return <></>
   return <>{pages}</>;
 };
 

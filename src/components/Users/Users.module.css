@@ -1,15 +1,22 @@
+.usersContainer {
+  margin-left: 80px;
+}
+
 .usersPage {
-  margin-left: 60px;
-  padding: 20px;
+  padding: 20px 0 20px 0;
   border-bottom: 1px solid #00000042;
 }
 
 .pagesBar {
-  margin-left: 80px;
   padding-top: 20px;
   margin-bottom: 40px;
 }
 
 .pageTitle {
   margin-left: 85px;
+}
+
+.searchBtn {
+  margin-left: 10px;
+  padding: 7px;
 }

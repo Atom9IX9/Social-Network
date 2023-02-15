@@ -14,8 +14,7 @@ class HeaderContainer extends React.Component<THeaderContainerProps> {
 let mapStateToProps = (state: rootStateType): TMapStateToProps => {
   return {
     isAuth: state.auth.isAuth,
-    login: state.auth.login,
-    profile: state.auth.userProfile,
+    profile: state.auth.ownerProfile,
   };
 };
 
@@ -30,7 +29,6 @@ export default connect<
 
 type TMapStateToProps = {
   isAuth: boolean;
-  login: string | null;
   profile: ProfileType | null;
 };
 type TMapDispatchToProps = {

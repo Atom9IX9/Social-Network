@@ -33,6 +33,14 @@ export const getStateIsFollowRequest = (
   return state.usersPage.isFollowRequest; // * get array of users ids
 };
 
+export const getTerm = (state: rootStateType): string => {
+  return state.usersPage.filter.term;
+};
+
+export const getFriendFilter = (state: rootStateType): boolean | null => {
+  return state.usersPage.filter.friend;
+}
+
 // * Messages
 export const getMessagesContacts = (
   state: rootStateType
@@ -59,5 +67,5 @@ export const getProfileStatus = (state: rootStateType): string | null => {
 
 // * all Content
 export const getIsActiveNav = (state: rootStateType): boolean => {
-  return state.allContent.isActiveNav; 
+  return state.allContent.isActiveNav;
 };

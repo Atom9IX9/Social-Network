@@ -4,13 +4,14 @@ import { updateArrayObj } from "../utils/objectHelpers";
 import { InferActionsTypes, ThunkType } from "./reduxStore";
 import { Dispatch } from "redux";
 
-let initialState = {
+const initialState = {
   users: [] as [] | Array<UserType>, // * array of users
   pageSize: 10, // * count of users in one page
   totalItemsCount: 0, // * total users count
   currentPage: 1,
   isFetching: false,
   isFollowRequest: [] as [] | Array<number>, // * array of users ids
+  filter: { term: "", friend: null as boolean | null }, // * object of request filters
 };
 
 const usersReducer = (
@@ -64,6 +65,8 @@ const usersReducer = (
           ? [...state.isFollowRequest, action.userId]
           : state.isFollowRequest.filter((id) => id !== action.userId),
       };
+    case "SET_FILTER/usersReducer":
+      return { ...state, filter: { term: action.term, friend: action.friend } };
     default:
       return state;
   }
@@ -106,6 +109,13 @@ export const actions = {
       isFetching,
     } as const;
   },
+  setFilter: (term: string, friend: boolean | null) => {
+    return {
+      type: "SET_FILTER/usersReducer",
+      term,
+      friend,
+    } as const;
+  },
   toggleIsFollowing: (isFollowing: boolean, userId: number) => {
     return {
       type: "TOGGLE_IS_FOLLOW_REQUEST/usersReducer",
@@ -117,15 +127,18 @@ export const actions = {
 
 export let getUsers = (
   currentPage: number,
-  pageSize: number
+  pageSize: number,
+  term: string,
+  friend: boolean | null
 ): UsersThunkType => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(actions.toggleIsFetching(true));
-    let data = await usersAPI.getUsers(currentPage, pageSize);
+    let data = await usersAPI.getUsers(currentPage, pageSize, term, friend);
     dispatch(actions.toggleIsFetching(false));
     dispatch(actions.setUsers(data.items));
     dispatch(actions.setTotalUsersCount(data.totalCount));
     dispatch(actions.setCurrentPage(currentPage));
+    dispatch(actions.setFilter(term, friend));
   };
 };
 let __followUnfollowFlow = async (
@@ -149,14 +162,14 @@ export let follow = (userId: number): UsersThunkType => {
   return async (dispatch) => {
     let apiMethod = usersAPI.follow.bind(usersAPI);
     let actionCreator = actions.followSuccess;
-    __followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
+    await __followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
   };
 };
 export let unfollow = (userId: number): UsersThunkType => {
   return async (dispatch) => {
     let apiMethod = usersAPI.unfollow.bind(usersAPI);
     let actionCreator = actions.unfollowSuccess;
-    __followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
+    await __followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
   };
 };
 

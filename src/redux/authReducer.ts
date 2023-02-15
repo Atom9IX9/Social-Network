@@ -4,13 +4,14 @@ import { FormAction, stopSubmit } from "redux-form";
 import { CaptchaResultCodes, ResultCodes } from "../api/api";
 import { securityAPI } from "../api/securityAPI";
 import { authAPI } from "../api/authAPI";
+import { profileAPI } from "../api/profileAPI";
 
 const initialState = {
   id: null as number | null, // * owner id
   email: null as string | null, // * owner email
   login: null as string | null, // * owner login
   isAuth: false,
-  userProfile: null as ProfileType | null, // * owner profile
+  ownerProfile: null as ProfileType | null,
   captchaImage: null as string | null, // * captcha url
 };
 
@@ -28,7 +29,7 @@ let authReducer = (
     case "SET_USER_PROFILE/AUTH_REDUCER":
       return {
         ...state,
-        userProfile: action.profile,
+        ownerProfile: action.profile,
       };
     case "SET_CAPTCHA_IMAGE/AUTH_REDUCER":
       return {
@@ -71,11 +72,17 @@ export const actions = {
   },
 };
 
+const getAuthProfile = (): AuthThunkType => async (dispatch, getState) => {
+  const data = await profileAPI.getProfile(null, getState().auth.id as number);
+  dispatch(actions.setUserProfile(data))
+};
+
 export let getAuth = (): AuthThunkType => async (dispatch) => {
   const data = await authAPI.me();
   if (data.resultCode === ResultCodes.Success) {
     let { id, email, login } = data.data;
     dispatch(actions.setUserData(id, email, login, true));
+    if (id) dispatch(getAuthProfile());
   }
 };
 export let login = (
@@ -98,8 +105,6 @@ export let login = (
         dispatch(stopSubmit("login", { _error: message }));
       }
     } catch (error: any) {
-      console.log(error);
-
       dispatch(stopSubmit("login", { _error: error.message }));
     }
   };
