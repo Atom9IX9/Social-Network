@@ -1,6 +1,8 @@
 import { Field, Formik } from "formik";
 import style from "./Users.module.css";
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getFriendFilter, getTerm } from "../../redux/selectors";
 
 const usersSearchFormValidator = (values: any) => {
   const errors = {};
@@ -10,6 +12,10 @@ const usersSearchFormValidator = (values: any) => {
 export const UsersSearchForm: React.FC<UsersSearchFormProps> = ({
   setFilter,
 }) => {
+  const initialTerm = useSelector(getTerm);
+  const initialFriend = useSelector(getFriendFilter);
+  const dispatch = useDispatch<any>();
+
   const onSubmit = (
     values: UsersSearchFormValuesType,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
@@ -21,7 +27,7 @@ export const UsersSearchForm: React.FC<UsersSearchFormProps> = ({
         ? false
         : null;
     setTimeout(() => {
-      setFilter(values.term, friend);
+      dispatch(setFilter(values.term, friend));
       setSubmitting(false);
     }, 400);
   };
@@ -29,7 +35,12 @@ export const UsersSearchForm: React.FC<UsersSearchFormProps> = ({
   return (
     <div>
       <Formik
-        initialValues={{ term: "", friend: null }}
+        initialValues={{
+          term: initialTerm,
+          friend: (initialFriend !== null
+            ? `${initialFriend}`
+            : null) as FriendValue,
+        }}
         validate={usersSearchFormValidator}
         onSubmit={onSubmit}
       >
@@ -74,8 +85,9 @@ export default UsersSearchForm;
 
 type UsersSearchFormValuesType = {
   term: string;
-  friend: "true" | "false" | null;
+  friend: FriendValue;
 };
+type FriendValue = "true" | "false" | null;
 type UsersSearchFormProps = {
   setFilter: (term: string, friend: boolean | null) => void;
   getUsers: (

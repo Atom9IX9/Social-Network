@@ -4,29 +4,51 @@ import Paginator from "../common/Paginator/Paginator";
 import User from "./User/User";
 import { UserType } from "../../types/types";
 import UsersSearchForm from "./UsersSearchForm";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getFriendFilter,
+  getMyProfileId,
+  getStateCurrentPage,
+  getStateIsFollowRequest,
+  getStatePageSize,
+  getStateTotalUsersCount,
+  getStateUsers,
+  getTerm,
+} from "../../redux/selectors";
+import { getUsers, follow, unfollow } from "../../redux/usersReducer";
 
-const Users: React.FC<UsersProps> = ({
-  usersArray,
-  isFollowing,
-  unfollow,
-  follow,
-  totalItemsCount,
-  pageSize,
-  onPageChange,
-  currentPage,
-  ownerId,
-  setFilter,
-  getUsers,
-}) => {
-  let users = usersArray.map((u: UserType) => {
+const Users: React.FC<UsersProps> = ({ setFilter, isFetching }) => {
+  const currentPage = useSelector(getStateCurrentPage);
+  const totalItemsCount = useSelector(getStateTotalUsersCount);
+  const pageSize = useSelector(getStatePageSize);
+  const term = useSelector(getTerm);
+  const friend = useSelector(getFriendFilter);
+  const isFollowing = useSelector(getStateIsFollowRequest);
+  const usersArray = useSelector(getStateUsers);
+  const ownerId = useSelector(getMyProfileId);
+
+  const dispatch = useDispatch<any>();
+
+  const onPageChange = (pageNumber: number) => {
+    dispatch(getUsers(pageNumber, pageSize, term, friend));
+  };
+  const dispatchFollow = (userId: number) => {
+    dispatch(follow(userId));
+  };
+  const dispatchUnfollow = (userId: number) => {
+    dispatch(unfollow(userId));
+  };
+  
+
+  const users = usersArray.map((u: UserType) => {
     if (u.id === ownerId) return null;
     return (
       <div className={style.usersPage} key={u.id}>
         <User
           user={u}
           isFollowing={isFollowing}
-          unfollow={unfollow}
-          follow={follow}
+          unfollow={dispatchUnfollow}
+          follow={dispatchFollow}
         />
       </div>
     );
@@ -52,20 +74,6 @@ const Users: React.FC<UsersProps> = ({
 export default Users;
 
 type UsersProps = {
-  usersArray: Array<UserType>;
-  isFollowing: Array<number>;
-  unfollow: (userId: number) => void;
-  follow: (userId: number) => void;
-  totalItemsCount: number;
-  pageSize: number;
-  onPageChange: (pageNumber: number) => void;
+  isFetching: boolean;
   setFilter: (term: string, friend: boolean | null) => void;
-  currentPage: number;
-  ownerId: number | null;
-  getUsers: (
-    currentPage: number,
-    pageSize: number,
-    term: string,
-    friend: boolean | null
-  ) => void;
 };

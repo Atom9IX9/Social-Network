@@ -9,12 +9,7 @@ export const usersAPI = {
     friend: boolean | null = null
   ) => {
     const response = await instance.get<GetUsersResponse>(
-      `users?
-        page=${currentPage}
-        &count=${pageSize}
-        ${friend || friend === false ? `&friend=${friend}` : ""}       
-        ${term && `&term=${term}`}
-      `
+      `users?page=${currentPage}&count=${pageSize}&friend=${friend}${term ? `&term=${term}`: ""}`
     );
     return response.data;
   },

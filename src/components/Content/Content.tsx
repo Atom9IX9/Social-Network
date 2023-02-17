@@ -1,7 +1,7 @@
 import React from "react";
 import News from "../News/News";
 import Settings from "../Settings/Settings";
-import UsersContainer from "../Users/UsersContainer";
+import UsersPage from "../Users/UsersContainer";
 import Music from "../Music/Music";
 import { Navigate, Route, Routes } from "react-router-dom";
 import style from "./Content.module.css";
@@ -43,7 +43,7 @@ const Content: React.FC<TContentProps> = ({ isActiveNav, toggleNav }) => {
         <Route path="/news" element={<News />} />
         <Route path="/music" element={<Music />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/users" element={<UsersContainer />} />
+        <Route path="/users" element={<UsersPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/messages/*" element={<MessagesContainer />} />
         <Route path="/profile/:userId" element={<ProfileContainer />} />
