@@ -17,7 +17,7 @@ import {
 } from "../../redux/selectors";
 import { getUsers, follow, unfollow } from "../../redux/usersReducer";
 
-const Users: React.FC<UsersProps> = ({ setFilter, isFetching }) => {
+const Users: React.FC<UsersProps> = () => {
   const currentPage = useSelector(getStateCurrentPage);
   const totalItemsCount = useSelector(getStateTotalUsersCount);
   const pageSize = useSelector(getStatePageSize);
@@ -38,7 +38,6 @@ const Users: React.FC<UsersProps> = ({ setFilter, isFetching }) => {
   const dispatchUnfollow = (userId: number) => {
     dispatch(unfollow(userId));
   };
-  
 
   const users = usersArray.map((u: UserType) => {
     if (u.id === ownerId) return null;
@@ -56,7 +55,7 @@ const Users: React.FC<UsersProps> = ({ setFilter, isFetching }) => {
   return (
     <div className={style.usersContainer}>
       <div className={style.searchInp}>
-        <UsersSearchForm setFilter={setFilter} getUsers={getUsers} />
+        <UsersSearchForm getUsers={getUsers} />
       </div>
       <div>{users.length ? users : "No users found"}</div>
       <div className={style.pagesBar}>
@@ -73,7 +72,4 @@ const Users: React.FC<UsersProps> = ({ setFilter, isFetching }) => {
 
 export default Users;
 
-type UsersProps = {
-  isFetching: boolean;
-  setFilter: (term: string, friend: boolean | null) => void;
-};
+type UsersProps = {};

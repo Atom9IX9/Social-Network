@@ -2,18 +2,29 @@ import React from "react";
 import style from "./Login.module.css";
 import LoginReduxForm from "./LoginForm/LoginForm";
 import { login } from "../../../redux/authReducer";
-import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { rootStateType } from "../../../redux/reduxStore";
 import { LoginFormDataValues } from "../../../types/types";
+import { useDispatch, useSelector } from "react-redux";
 
-const Login: React.FC<LoginProps> = ({ login, isAuth, captchaImage }) => {
+const Login: React.FC<LoginProps> = () => {
+  // * selectors
+  const isAuth = useSelector((state: rootStateType) => state.auth.isAuth);
+  const captchaImage = useSelector(
+    (state: rootStateType) => state.auth.captchaImage
+  );
+
+  // * hooks
+  const dispatch = useDispatch<any>();
+
   const onSubmit = (formData: LoginFormDataValues) => {
-    login(
-      formData.email,
-      formData.password,
-      formData.rememberMe,
-      formData.captcha
+    dispatch(
+      login(
+        formData.email,
+        formData.password,
+        formData.rememberMe,
+        formData.captcha
+      )
     );
   };
 
@@ -31,27 +42,7 @@ const Login: React.FC<LoginProps> = ({ login, isAuth, captchaImage }) => {
   );
 };
 
-let mapStateToProps = (state: rootStateType) => {
-  return { isAuth: state.auth.isAuth, captchaImage: state.auth.captchaImage };
-};
+export default Login;
 
-export default connect<
-  MapStateToPropsType,
-  MapDispatchToPropsType,
-  {},
-  rootStateType
->(mapStateToProps, { login })(Login);
-
-type MapStateToPropsType = {
-  isAuth: boolean;
-  captchaImage: string | null;
-};
-type MapDispatchToPropsType = {
-  login: (
-    email: string,
-    password: string,
-    rememberMe: boolean,
-    captcha: string | null
-  ) => void;
-};
-type LoginProps = MapStateToPropsType & MapDispatchToPropsType;
+// * types
+type LoginProps = {};

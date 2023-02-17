@@ -125,22 +125,6 @@ export const actions = {
   },
 };
 
-export let getUsers = (
-  currentPage: number,
-  pageSize: number,
-  term: string,
-  friend: boolean | null
-): UsersThunkType => {
-  return async (dispatch, getState) => {
-    dispatch(actions.toggleIsFetching(true));
-    let data = await usersAPI.getUsers(currentPage, pageSize, term, friend);
-    dispatch(actions.toggleIsFetching(false));
-    dispatch(actions.setUsers(data.items));
-    dispatch(actions.setTotalUsersCount(data.totalCount));
-    dispatch(actions.setCurrentPage(currentPage));
-    dispatch(actions.setFilter(term, friend));
-  };
-};
 let __followUnfollowFlow = async (
   dispatch: DispatchType,
   userId: number,
@@ -157,6 +141,24 @@ let __followUnfollowFlow = async (
     dispatch(actionCreator(userId));
     dispatch(actions.toggleIsFollowing(false, userId));
   }
+};
+
+// * thunks
+export let getUsers = (
+  currentPage: number,
+  pageSize: number,
+  term: string,
+  friend: boolean | null
+): UsersThunkType => {
+  return async (dispatch, getState) => {
+    dispatch(actions.toggleIsFetching(true));
+    let data = await usersAPI.getUsers(currentPage, pageSize, term, friend);
+    dispatch(actions.toggleIsFetching(false));
+    dispatch(actions.setUsers(data.items));
+    dispatch(actions.setTotalUsersCount(data.totalCount));
+    dispatch(actions.setCurrentPage(currentPage));
+    dispatch(actions.setFilter(term, friend));
+  };
 };
 export let follow = (userId: number): UsersThunkType => {
   return async (dispatch) => {
@@ -175,7 +177,8 @@ export let unfollow = (userId: number): UsersThunkType => {
 
 export default usersReducer;
 
+// * types
 export type InitialStateType = typeof initialState;
 type UsersReducerActionType = InferActionsTypes<typeof actions>;
-type UsersThunkType = ThunkType<UsersReducerActionType>;
+export type UsersThunkType = ThunkType<UsersReducerActionType>;
 type DispatchType = Dispatch<UsersReducerActionType>;

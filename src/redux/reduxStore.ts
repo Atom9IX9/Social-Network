@@ -26,7 +26,19 @@ let rootReducer = combineReducers({
   form: formReducer,
 });
 
-export type InferActionsTypes<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never;
+// @ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // ? for using compose
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunkMiddleware)) // ? for using thunks
+);
+
+// * generic types
+export type InferActionsTypes<T> = T extends {
+  [key: string]: (...args: any[]) => infer U;
+}
+  ? U
+  : never;
 export type ThunkType<A extends Action, R = Promise<void>> = ThunkAction<
   R,
   rootStateType,
@@ -34,14 +46,8 @@ export type ThunkType<A extends Action, R = Promise<void>> = ThunkAction<
   A
 >;
 
-// @ts-ignore
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // ? fn compose
-const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunkMiddleware))
-);
+export default store;
 
+// types
 export type rootReducerType = typeof store.dispatch;
 export type rootStateType = ReturnType<typeof store.getState>;
-
-export default store;

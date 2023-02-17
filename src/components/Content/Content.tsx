@@ -1,7 +1,7 @@
 import React from "react";
 import News from "../News/News";
 import Settings from "../Settings/Settings";
-import UsersPage from "../Users/UsersContainer";
+import UsersPage from "../Users/UsersPage";
 import Music from "../Music/Music";
 import { Navigate, Route, Routes } from "react-router-dom";
 import style from "./Content.module.css";

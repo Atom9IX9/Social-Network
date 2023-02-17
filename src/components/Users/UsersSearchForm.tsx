@@ -2,18 +2,19 @@ import { Field, Formik } from "formik";
 import style from "./Users.module.css";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFriendFilter, getTerm } from "../../redux/selectors";
+import { getFriendFilter, getStatePageSize, getTerm } from "../../redux/selectors";
+import { actions, getUsers } from "../../redux/usersReducer";
+const { setFilter } = actions;
 
 const usersSearchFormValidator = (values: any) => {
   const errors = {};
   return errors;
 };
 
-export const UsersSearchForm: React.FC<UsersSearchFormProps> = ({
-  setFilter,
-}) => {
+export const UsersSearchForm: React.FC<UsersSearchFormProps> = () => {
   const initialTerm = useSelector(getTerm);
   const initialFriend = useSelector(getFriendFilter);
+  const pageSize = useSelector(getStatePageSize)
   const dispatch = useDispatch<any>();
 
   const onSubmit = (
@@ -28,6 +29,7 @@ export const UsersSearchForm: React.FC<UsersSearchFormProps> = ({
         : null;
     setTimeout(() => {
       dispatch(setFilter(values.term, friend));
+      dispatch(getUsers(1, pageSize, values.term, friend))
       setSubmitting(false);
     }, 400);
   };
@@ -44,29 +46,19 @@ export const UsersSearchForm: React.FC<UsersSearchFormProps> = ({
         validate={usersSearchFormValidator}
         onSubmit={onSubmit}
       >
-        {({
-          values,
-          errors,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }) => (
+        {({ values, handleSubmit, isSubmitting }) => (
           <form onSubmit={handleSubmit}>
             <Field
               placeholder="...search"
               type="text"
               name="term"
-              onChange={handleChange}
-              onBlur={handleBlur}
               value={values.term}
             />
-            <Field as="select" name="friend">
+            <Field as="select" name="friend" className={style.friendFilterSelect}>
               <option value="null">All</option>
               <option value="true">Only followed</option>
               <option value="false">Only unfollowed</option>
             </Field>
-            {errors.term || errors.friend}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -89,7 +81,6 @@ type UsersSearchFormValuesType = {
 };
 type FriendValue = "true" | "false" | null;
 type UsersSearchFormProps = {
-  setFilter: (term: string, friend: boolean | null) => void;
   getUsers: (
     currentPage: number,
     pageSize: number,
