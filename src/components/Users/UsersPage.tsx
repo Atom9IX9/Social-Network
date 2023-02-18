@@ -17,7 +17,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 
 const UsersPage: React.FC<UsersPageProps> = () => {
-  
   // * selectors
   const isFetching = useSelector(getStateIsFetching);
   const pageSize = useSelector(getStatePageSize);
@@ -61,11 +60,7 @@ const UsersPage: React.FC<UsersPageProps> = () => {
   return (
     <>
       <h2 className={style.pageTitle}>Users</h2>
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <Users />
-      )}
+      {isFetching ? <Preloader /> : <Users />}
     </>
   );
 };

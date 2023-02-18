@@ -2,20 +2,22 @@ import * as React from "react";
 import style from "./Nav.module.css";
 import Friend from "./Friend/Friend";
 import Link from "./Link/Link";
-import { SidebarFriendType, SidebarLinkType } from "../../redux/sidebarReducer";
+import { useSelector } from "react-redux";
+import { rootStateType } from "../../redux/reduxStore";
 
-type TNavbarProps = {
-  friends: Array<SidebarFriendType>;
-  links: Array<SidebarLinkType>;
-};
 
-const Navbar: React.FC<TNavbarProps> = ({ friends, links }) => {
+const Navbar: React.FC<TNavbarProps> = () => {
+  const friends = useSelector((state: rootStateType) => state.sidebar.friends)
+  const links = useSelector((state: rootStateType) => state.sidebar.links)
+
   let friendsComponents = friends.map((f) => (
     <Friend name={f.name} key={friends.indexOf(f)} />
   ));
+
   let linksComponents = links.map((l) => (
     <Link path={l.path} linkName={l.linkName} key={l.linkId} />
   ));
+  
   return (
     <nav className={style.nav}>
       <ul className={style.list}>{linksComponents}</ul>
@@ -28,3 +30,5 @@ const Navbar: React.FC<TNavbarProps> = ({ friends, links }) => {
 };
 
 export default Navbar;
+
+type TNavbarProps = {};
