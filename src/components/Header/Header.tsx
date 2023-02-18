@@ -1,48 +1,51 @@
 import style from "./Header.module.css";
-import React, { useState } from "react";
-import Logo from "../../assets/img/logo.jpg";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import UserAvatar from "../../assets/img/defaultUserAv.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { rootStateType } from "../../redux/reduxStore";
 import { logout } from "../../redux/authReducer";
 // * antd
-import { Layout, theme } from "antd";
+import { Layout, Button } from "antd";
 import Avatar from "antd/es/avatar";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd/es/grid";
 
 const { Header } = Layout;
 
-const HeaderC: React.FC<HeaderProps> = ({collapsed, setCollapsed}) => {
+const HeaderC: React.FC<HeaderProps> = ({ collapsed, setCollapsed }) => {
   const isAuth = useSelector((state: rootStateType) => state.auth.isAuth);
   const profile = useSelector(
     (state: rootStateType) => state.auth.ownerProfile
   );
 
   const dispatch = useDispatch<any>();
-  // const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
 
   return (
-    <Header style={{ padding: 0, background: colorBgContainer }}>
+    <Header style={{ padding: 0 }}>
       <Row>
-        <Col span={1}>
+        <Col span={1} offset={1}>
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
               className: "trigger",
+              style: { color: "#d4d4d4" },
               onClick: () => setCollapsed(!collapsed),
             }
           )}
         </Col>
-        <Col span={23}>
-          {isAuth ? (
+
+        {isAuth ? (
+          <Col span={22}>
             <div className={style.authProfile}>
               <div>
-                <button onClick={() => dispatch(logout())}>Log out</button>
+                <Button
+                  color="red"
+                  type="primary"
+                  onClick={() => dispatch(logout())}
+                >
+                  Log out
+                </Button>
               </div>
               <NavLink to="/profile" className={style.redirectProfile}>
                 <div className={style.login}>{profile?.fullName}</div>
@@ -57,16 +60,15 @@ const HeaderC: React.FC<HeaderProps> = ({collapsed, setCollapsed}) => {
                 )}
               </NavLink>
             </div>
-          ) : (
-            <div className={style.loginBlock}>
+          </Col>
+        ) : (
+          <Col span={22} push={20}>
+            <Button type="primary">
               <NavLink to="/login">Log in</NavLink>
-            </div>
-          )}
-        </Col>
+            </Button>
+          </Col>
+        )}
       </Row>
-      
-        
-      
     </Header>
   );
 };
@@ -75,5 +77,5 @@ export default HeaderC;
 
 type HeaderProps = {
   collapsed: boolean;
-  setCollapsed: any
+  setCollapsed: any;
 };
