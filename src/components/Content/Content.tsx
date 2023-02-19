@@ -7,6 +7,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "../common/Login/Login";
 import withSuspense from "../../hoc/withSuspense";
 import { Content } from "antd/es/layout/layout";
+import Chat from "../Chat/Chat";
 
 const MessagesContainer = withSuspense(
   React.lazy<React.ComponentType>(() => import("../Messages/MessagesContainer"))
@@ -35,6 +36,7 @@ const ContentC: React.FC<TContentProps> = ({ bg }) => {
         <Route path="/messages/*" element={<MessagesContainer />} />
         <Route path="/profile/:userId" element={<ProfileContainer />} />
         <Route path="/profile" element={<ProfileContainer />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </Content>
   );

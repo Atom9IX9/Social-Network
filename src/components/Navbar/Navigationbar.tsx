@@ -8,6 +8,7 @@ import {
   SettingOutlined,
   FileSearchOutlined,
   CommentOutlined,
+  MessageOutlined
 } from "@ant-design/icons";
 import { Menu } from "antd";
 
@@ -27,7 +28,7 @@ const Navbar: React.FC<TNavbarProps> = ({ collapsed }) => {
               },
               {
                 key: "2",
-                icon: <CommentOutlined />,
+                icon: <MessageOutlined />,
                 label: <Link linkName="Messages" path="messages" />,
               },
               {
@@ -37,16 +38,21 @@ const Navbar: React.FC<TNavbarProps> = ({ collapsed }) => {
               },
               {
                 key: "4",
+                icon: <CommentOutlined />,
+                label: <Link linkName="Chat" path="chat" />
+              },
+              {
+                key: "5",
                 icon: <ExceptionOutlined />,
                 label: <Link linkName="News" path="news" />,
               },
               {
-                key: "5",
+                key: "6",
                 icon: <CustomerServiceOutlined />,
                 label: <Link linkName="Music" path="music" />,
               },
               {
-                key: "6",
+                key: "7",
                 icon: <SettingOutlined />,
                 label: <Link linkName="Settings" path="settings" />,
               },
