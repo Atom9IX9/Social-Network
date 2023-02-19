@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { rootStateType } from "../../redux/reduxStore";
 import { logout } from "../../redux/authReducer";
 // * antd
-import { Layout, Button } from "antd";
+import { Button } from "antd";
 import Avatar from "antd/es/avatar";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd/es/grid";
+import { Header } from "antd/es/layout/layout";
 
-const { Header } = Layout;
 
 const HeaderC: React.FC<HeaderProps> = ({ collapsed, setCollapsed }) => {
   const isAuth = useSelector((state: rootStateType) => state.auth.isAuth);

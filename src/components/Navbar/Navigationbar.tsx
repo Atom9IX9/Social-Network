@@ -1,34 +1,61 @@
 import * as React from "react";
-import style from "./Nav.module.css";
-import Friend from "./Friend/Friend";
 import Link from "./Link/Link";
-import { useSelector } from "react-redux";
-import { rootStateType } from "../../redux/reduxStore";
+import Sider from "antd/es/layout/Sider";
+import {
+  UserOutlined,
+  CustomerServiceOutlined,
+  ExceptionOutlined,
+  SettingOutlined,
+  FileSearchOutlined,
+  CommentOutlined,
+} from "@ant-design/icons";
+import { Menu } from "antd";
 
-
-const Navbar: React.FC<TNavbarProps> = () => {
-  const friends = useSelector((state: rootStateType) => state.sidebar.friends)
-  const links = useSelector((state: rootStateType) => state.sidebar.links)
-
-  let friendsComponents = friends.map((f) => (
-    <Friend name={f.name} key={friends.indexOf(f)} />
-  ));
-
-  let linksComponents = links.map((l) => (
-    <Link path={l.path} linkName={l.linkName} key={l.linkId} />
-  ));
-  
+const Navbar: React.FC<TNavbarProps> = ({ collapsed }) => {
   return (
-    <nav className={style.nav}>
-      <ul className={style.list}>{linksComponents}</ul>
-      <div className={style.friends}>
-        <h3>Friends</h3>
-        <div className={style.friendsList}>{friendsComponents}</div>
-      </div>
-    </nav>
+    <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div className="logo">logo</div>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["1"]}
+            items={[
+              {
+                key: "1",
+                icon: <UserOutlined />,
+                label: <Link linkName="Profile" path="profile" />,
+              },
+              {
+                key: "2",
+                icon: <CommentOutlined />,
+                label: <Link linkName="Messages" path="messages" />,
+              },
+              {
+                key: "3",
+                icon: <FileSearchOutlined />,
+                label: <Link linkName="Users" path="users" />,
+              },
+              {
+                key: "4",
+                icon: <ExceptionOutlined />,
+                label: <Link linkName="News" path="news" />,
+              },
+              {
+                key: "5",
+                icon: <CustomerServiceOutlined />,
+                label: <Link linkName="Music" path="music" />,
+              },
+              {
+                key: "6",
+                icon: <SettingOutlined />,
+                label: <Link linkName="Settings" path="settings" />,
+              },
+            ]}
+          />
+        </Sider>
   );
 };
 
 export default Navbar;
 
-type TNavbarProps = {};
+type TNavbarProps = { collapsed: boolean };

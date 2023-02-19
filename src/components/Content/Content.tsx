@@ -6,8 +6,7 @@ import Music from "../Music/Music";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "../common/Login/Login";
 import withSuspense from "../../hoc/withSuspense";
-import { Layout } from "antd";
-const { Content } = Layout;
+import { Content } from "antd/es/layout/layout";
 
 const MessagesContainer = withSuspense(
   React.lazy<React.ComponentType>(() => import("../Messages/MessagesContainer"))
@@ -16,14 +15,14 @@ const ProfileContainer = withSuspense(
   React.lazy<React.ComponentType>(() => import("../Profile/ProfileContainer"))
 );
 
-const ContentC: React.FC<TContentProps> = ({ colorBgContainer }) => {
+const ContentC: React.FC<TContentProps> = ({ bg }) => {
   return (
     <Content
       style={{
         margin: "24px 16px",
         padding: 24,
         minHeight: 280,
-        background: colorBgContainer,
+        background: bg,
       }}
     >
       <Routes>
@@ -44,5 +43,5 @@ const ContentC: React.FC<TContentProps> = ({ colorBgContainer }) => {
 export default ContentC;
 
 type TContentProps = {
-  colorBgContainer: string
+  bg: string
 };
