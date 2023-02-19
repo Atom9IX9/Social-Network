@@ -4,40 +4,28 @@ import Settings from "../Settings/Settings";
 import UsersPage from "../Users/UsersPage";
 import Music from "../Music/Music";
 import { Navigate, Route, Routes } from "react-router-dom";
-import style from "./Content.module.css";
 import Login from "../common/Login/Login";
 import withSuspense from "../../hoc/withSuspense";
+import { Content } from "antd/es/layout/layout";
+import Chat from "../Chat/Chat";
 
 const MessagesContainer = withSuspense(
   React.lazy<React.ComponentType>(() => import("../Messages/MessagesContainer"))
 );
-
 const ProfileContainer = withSuspense(
   React.lazy<React.ComponentType>(() => import("../Profile/ProfileContainer"))
 );
 
-type TContentProps = {
-  isActiveNav: boolean;
-  toggleNav: (isActive: boolean) => void;
-}
-
-const Content: React.FC<TContentProps> = ({ isActiveNav, toggleNav }) => {
+const ContentC: React.FC<TContentProps> = ({ bg }) => {
   return (
-    <div
-      className={`${style.appContentContainer} ${
-        isActiveNav ? style.activeNav : ""
-      }`}
+    <Content
+      style={{
+        margin: "24px 16px",
+        padding: 24,
+        minHeight: 280,
+        background: bg,
+      }}
     >
-      <div
-        className={style.navBurgerBtn}
-        onClick={() => {
-          isActiveNav ? toggleNav(false) : toggleNav(true);
-        }}
-      >
-        <span className={style.btnLine1}></span>
-        <span className={style.btnLine2}></span>
-        <span className={style.btnLine3}></span>
-      </div>
       <Routes>
         <Route path="/" element={<Navigate to="/profile" />} />
         <Route path="/news" element={<News />} />
@@ -48,9 +36,14 @@ const Content: React.FC<TContentProps> = ({ isActiveNav, toggleNav }) => {
         <Route path="/messages/*" element={<MessagesContainer />} />
         <Route path="/profile/:userId" element={<ProfileContainer />} />
         <Route path="/profile" element={<ProfileContainer />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
-    </div>
+    </Content>
   );
 };
 
-export default Content;
+export default ContentC;
+
+type TContentProps = {
+  bg: string
+};

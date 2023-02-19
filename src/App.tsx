@@ -1,63 +1,65 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+
+// * redux/react-redux
+import { useDispatch, useSelector } from "react-redux";
 import { compose } from "redux";
-import "./App.css";
+
+// * components
 import ConnectionError from "./components/common/Error/ConnectionError";
 import Preloader from "./components/common/Preloader/Preloader";
-import Content from "./components/Content/ContentContainer";
-import Header from "./components/Header/HeaderContainer";
-import Navbar from "./components/Navbar/NavigationbarContainer";
+import Content from "./components/Content/Content";
+import Header from "./components/Header/Header";
+import Navbar from "./components/Navbar/Navigationbar";
+
 import withRouter from "./hoc/withRouter";
+
 import { initialize } from "./redux/appReducer";
-import { rootStateType } from "./redux/reduxStore";
 import { getAppInitialized } from "./redux/selectors";
 
-class App extends React.Component<AppProps> {
-  catchAllErrors = (e: PromiseRejectionEvent) => alert("error");
+// * antd
+import { Layout, theme } from "antd";
 
-  componentDidMount = () => {
-    this.props.initialize();
-    window.addEventListener("unhandledrejection", this.catchAllErrors);
-  };
-  componentWillUnmount = () => {
-    window.addEventListener("unhandledrejection", this.catchAllErrors);
-  };
 
-  render = () => {
-    if (this.props.initialized === true) {
-      return (
-        <div className="app-container">
-          <Header />
-          <Navbar />
-          <Content />
-        </div>
-      );
-    } else if (this.props.initialized === "ERR_NETWORK") {
-      return <ConnectionError />;
-    } else {
-      return <Preloader />;
-    }
-  };
-}
+const App: React.FC<AppProps> = () => {
+  // * selectors
+  const initialized = useSelector(getAppInitialized);
 
-const mapStateToProps = (state: rootStateType): MapStateToProps => {
-  return { initialized: getAppInitialized(state) };
+  // * antd
+
+  // * menu/burger button connection
+  const [collapsed, setCollapsed] = useState(false);
+  // * bg
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  const dispatch = useDispatch<any>();
+
+  const catchAllErrors = (e: PromiseRejectionEvent) => alert("error");
+
+  // * catching all errors in api
+  useEffect(() => {
+    dispatch(initialize());
+    window.addEventListener("unhandledrejection", catchAllErrors);
+  }, []);
+
+  if (initialized === true) {
+    return (
+      <Layout>
+        <Navbar collapsed={collapsed} />
+        <Layout className="site-layout">
+          <Header collapsed={collapsed} setCollapsed={setCollapsed} />
+          <Content bg={colorBgContainer} />
+        </Layout>
+      </Layout>
+    );
+  } else if (initialized === "ERR_NETWORK") {
+    return <ConnectionError />;
+  } else {
+    return <Preloader />;
+  }
 };
 
-export default compose<React.ComponentType>(
-  withRouter,
-  connect<MapStateToProps, MapDispatchToProps, {}, rootStateType>(
-    mapStateToProps,
-    {
-      initialize,
-    }
-  )
-)(App);
+export default compose<React.ComponentType>(withRouter)(App);
 
-type MapStateToProps = {
-  initialized: boolean | string;
-};
-type MapDispatchToProps = {
-  initialize: () => void;
-};
-type AppProps = MapStateToProps & MapDispatchToProps;
+type AppProps = {};

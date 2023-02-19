@@ -12,7 +12,7 @@ const Link: React.FC<TLinkProps> = ({ path, linkName }) => {
     <li className={style.item}>
       <NavLink
         to={path}
-        className={({ isActive }) => (isActive ? style.active : "")}
+        // className={({ isActive }) => (isActive ? style.active : "")}
       >
         {linkName}
       </NavLink>
