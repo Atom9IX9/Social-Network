@@ -4,12 +4,11 @@ import { compose } from "redux";
 import "./App.css";
 import ConnectionError from "./components/common/Error/ConnectionError";
 import Preloader from "./components/common/Preloader/Preloader";
-// import Content from "./components/Content/ContentContainer";
+import Content from "./components/Content/Content";
 import Header from "./components/Header/Header";
 // import Navbar from "./components/Navbar/Navigationbar";
 import withRouter from "./hoc/withRouter";
 import { initialize } from "./redux/appReducer";
-import { rootStateType } from "./redux/reduxStore";
 import { getAppInitialized } from "./redux/selectors";
 import Link from "./components/Navbar/Link/Link";
 // * antd
@@ -22,16 +21,8 @@ import {
   CommentOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
-import { Navigate, Route, Routes } from "react-router-dom";
-import News from "./components/News/News";
-import Music from "./components/Music/Music";
-import Settings from "./components/Settings/Settings";
-import MemoizedUsersPage from "./components/Users/UsersPage";
-import Login from "./components/common/Login/Login";
-import MessagesContainer from "./components/Messages/MessagesContainer";
-import ProfileContainer from "./components/Profile/ProfileContainer";
 
-const { Sider, Content } = Layout;
+const { Sider } = Layout;
 
 const App: React.FC<AppProps> = () => {
   const initialized = useSelector(getAppInitialized);
@@ -94,27 +85,8 @@ const App: React.FC<AppProps> = () => {
           />
         </Sider>
         <Layout className="site-layout">
-          <Header collapsed={collapsed} setCollapsed={setCollapsed}/>
-          <Content
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: 280,
-              background: colorBgContainer,
-            }}
-          >
-            <Routes>
-              <Route path="/" element={<Navigate to="/profile" />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/music" element={<Music />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/users" element={<MemoizedUsersPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/messages/*" element={<MessagesContainer />} />
-              <Route path="/profile/:userId" element={<ProfileContainer />} />
-              <Route path="/profile" element={<ProfileContainer />} />
-            </Routes>
-          </Content>
+          <Header collapsed={collapsed} setCollapsed={setCollapsed} />
+          <Content colorBgContainer={colorBgContainer} />
         </Layout>
       </Layout>
 

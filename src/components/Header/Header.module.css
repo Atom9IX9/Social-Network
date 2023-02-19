@@ -1,11 +1,9 @@
-
-
 .authProfile {
   display: flex;
   flex-direction: row-reverse;
   gap: 20px;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 35px;
 }
 
 .login {
