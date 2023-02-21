@@ -2,7 +2,7 @@ import { Avatar, Card } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultAvatarImg from "../../assets/img/defaultUserAv.jpg";
-import { actions } from "../../redux/chatReducer";
+import { actions, ChatMessageType } from "../../redux/chatReducer";
 import { rootStateType } from "../../redux/reduxStore";
 
 const ws = new WebSocket(
@@ -23,15 +23,17 @@ const Chat = React.memo(() => {
 });
 
 const ChatMessages: React.FC<ChatMessagesProps> = React.memo(() => {
-  const messages = useSelector((state: rootStateType) => state.chatPage.chatMessages)
+  const messages = useSelector(
+    (state: rootStateType) => state.chatPage.chatMessages
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    debugger
+    debugger;
     ws.addEventListener("message", (e) => {
-      debugger
+      debugger;
       const newMessages = JSON.parse(e.data);
-      dispatch(actions.setChatMessages(newMessages))
+      dispatch(actions.setChatMessages(newMessages));
     });
   }, []);
 
@@ -83,12 +85,4 @@ export default React.memo(ChatPage);
 type MessagePropsType = {
   message: ChatMessageType;
 };
-
-type ChatMessageType = {
-  message: string;
-  userId: number;
-  userName: string;
-  photo: string | null;
-};
-
 type ChatMessagesProps = {};

@@ -30,7 +30,7 @@ export const actions = {
 
 export default chatReducer;
 
-type ChatMessageType = {
+export type ChatMessageType = {
   message: string;
   userId: number;
   userName: string;
