@@ -1,13 +1,13 @@
 import { Avatar, Card } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ChatMessageType } from "../../api/chatAPI";
 import DefaultAvatarImg from "../../assets/img/defaultUserAv.jpg";
-import { actions, ChatMessageType } from "../../redux/chatReducer";
+import {
+  sendChatMessage,
+  startMessagesListening,
+} from "../../redux/chatReducer";
 import { rootStateType } from "../../redux/reduxStore";
-
-const ws = new WebSocket(
-  "wss://social-network.samuraijs.com/handlers/ChatHandler.ashx"
-);
 
 const ChatPage = React.memo(() => {
   return <Chat />;
@@ -26,15 +26,10 @@ const ChatMessages: React.FC<ChatMessagesProps> = React.memo(() => {
   const messages = useSelector(
     (state: rootStateType) => state.chatPage.chatMessages
   );
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
 
   useEffect(() => {
-    debugger;
-    ws.addEventListener("message", (e) => {
-      debugger;
-      const newMessages = JSON.parse(e.data);
-      dispatch(actions.setChatMessages(newMessages));
-    });
+    dispatch(startMessagesListening());
   }, []);
 
   return (
@@ -48,11 +43,16 @@ const ChatMessages: React.FC<ChatMessagesProps> = React.memo(() => {
 
 const AddChatMessageForm = () => {
   const [message, setMessage] = useState("");
+  const chatStatus = useSelector(
+    (state: rootStateType) => state.chatPage.chatStatus
+  );
+  const dispatch = useDispatch<any>();
 
   const sendMessage = () => {
-    if (!message) return;
-    ws.send(message);
-    setMessage("");
+    if (message) {
+      dispatch(sendChatMessage(message));
+      setMessage("");
+    } else return;
   };
 
   return (
@@ -61,7 +61,12 @@ const AddChatMessageForm = () => {
         onChange={(e) => setMessage(e.currentTarget.value)}
         value={message}
       ></textarea>
-      <button onClick={sendMessage}>send</button>
+      <button
+        disabled={chatStatus === "ready" ? false : true}
+        onClick={sendMessage}
+      >
+        send
+      </button>
     </>
   );
 };
