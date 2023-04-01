@@ -1,5 +1,5 @@
 import { Avatar, Card } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageType } from "../../api/chatAPI";
 import DefaultAvatarImg from "../../assets/img/defaultUserAv.jpg";
@@ -23,20 +23,49 @@ const Chat = React.memo(() => {
 });
 
 const ChatMessages: React.FC<ChatMessagesProps> = React.memo(() => {
+  const [isAutoScroll, setIsAutoScroll] = useState(false);
   const messages = useSelector(
     (state: rootStateType) => state.chatPage.chatMessages
   );
   const dispatch = useDispatch<any>();
 
+  const chatMessagesScrollAnchor = useRef<HTMLDivElement>(null);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    const chatWindow = e.currentTarget;
+    if (
+      Math.abs(
+        chatWindow.scrollHeight - chatWindow.scrollTop - chatWindow.clientHeight
+      ) < 100
+    ) {
+      !isAutoScroll && setIsAutoScroll(true);
+    } else {
+      isAutoScroll && setIsAutoScroll(false);
+    }
+  };
+
+  const scrollDown = () => {
+    chatMessagesScrollAnchor.current?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  // * effects
   useEffect(() => {
     dispatch(startMessagesListening());
+    setTimeout(scrollDown, 1000)
   }, []);
+  //? auto scroll
+  useEffect(() => {
+    if (isAutoScroll) {
+      scrollDown()
+    }
+  }, [messages]);
 
   return (
-    <div style={{ overflow: "auto", height: "350px" }}>
+    <div style={{ overflow: "auto", height: "350px" }} onScroll={handleScroll}>
       {messages.map((m, index) => (
         <Message message={m} key={index} />
       ))}
+      <div ref={chatMessagesScrollAnchor}></div>
     </div>
   );
 });

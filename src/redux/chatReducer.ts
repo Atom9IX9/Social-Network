@@ -43,6 +43,7 @@ export const actions = {
   },
 };
 
+//? handle creators(for adding dispatch)
 let _handleNewMessage: ((messages: ChatMessageType[]) => void) | null = null;
 const handleNewMessageCreator = (dispatch: Dispatch) => {
   if (_handleNewMessage === null) {
@@ -53,21 +54,32 @@ const handleNewMessageCreator = (dispatch: Dispatch) => {
   return _handleNewMessage;
 };
 
+let _handleNewStatus: ((status: ChatStatusType) => void) | null = null;
+const handleNewStatusCreator = (dispatch: Dispatch) => {
+  if (_handleNewStatus === null) {
+    _handleNewStatus = (status) => {
+      dispatch(actions.setChatStatus(status))
+    }
+  }
+  return _handleNewStatus;
+}
+
+//? thunks
 export const startMessagesListening =
   (): ThunkType<chatReducerActionsTypes, void> => (dispatch) => {
     chatAPI.subscribeMessagesCb(handleNewMessageCreator(dispatch));
-    chatAPI.subscribeStatusCb((status) => { dispatch(actions.setChatStatus(status)) })
+    chatAPI.subscribeStatusCb(handleNewStatusCreator(dispatch))
     chatAPI.start();
   };
 export const stopMessagesListening =
   (): ThunkType<chatReducerActionsTypes, void> => (dispatch) => {
     chatAPI.unsubscribeMessagesCb(handleNewMessageCreator(dispatch));
-    chatAPI.unsubscribeStatusCb((status) => { dispatch(actions.setChatStatus(status)) });
+    chatAPI.unsubscribeStatusCb(handleNewStatusCreator(dispatch));
     chatAPI.stop();
   };
 export const sendChatMessage =
   (message: string): ThunkType<chatReducerActionsTypes, void> =>
-  (dispatch) => {
+  () => {
     chatAPI.sendMessage(message);
   };
 

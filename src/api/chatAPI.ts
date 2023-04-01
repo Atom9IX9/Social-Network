@@ -5,17 +5,6 @@ let subscribers: SubscribersType = {
   statusSubscribers: [],
 };
 
-const handleClose = () => {
-  setTimeout(createWSChannel, 3000);
-  subscribers.statusSubscribers.forEach((s) => {
-    s("connecting");
-  });
-};
-
-const handleError = () => {
-  ws?.close();
-};
-
 const createWSChannel = () => {
   ws?.close();
   cleanAllListeners();
@@ -28,11 +17,20 @@ const createWSChannel = () => {
   ws.addEventListener("open", handleOpen);
 };
 
+//? handlers
+const handleClose = () => {
+  setTimeout(createWSChannel, 3000);
+  subscribers.statusSubscribers.forEach((s) => {
+    s("connecting");
+  });
+};
+const handleError = () => {
+  ws?.close();
+};
 const handleMessage = (e: MessageEvent) => {
   const newMessages = JSON.parse(e.data);
   subscribers.messagesSubscribers.forEach((s) => s(newMessages));
 };
-
 const handleOpen = () => {
   subscribers.statusSubscribers.forEach((s) => {
     s("ready");
@@ -46,6 +44,7 @@ const cleanAllListeners = () => {
   ws?.removeEventListener("open", handleOpen);
 };
 
+//? All ChatAPI Methods
 export const chatAPI = {
   start: () => {
     createWSChannel();
