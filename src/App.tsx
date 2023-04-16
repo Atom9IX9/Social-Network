@@ -19,7 +19,6 @@ import { getAppInitialized } from "./redux/selectors";
 // * antd
 import { Layout, theme } from "antd";
 
-
 const App: React.FC<AppProps> = () => {
   // * selectors
   const initialized = useSelector(getAppInitialized);
@@ -35,12 +34,12 @@ const App: React.FC<AppProps> = () => {
 
   const dispatch = useDispatch<any>();
 
-  const catchAllErrors = (e: PromiseRejectionEvent) => alert("error");
+  const catchAllErrors = (e: PromiseRejectionEvent) => alert("error"); //? react on all errors
 
   // * catching all errors in api
   useEffect(() => {
     dispatch(initialize());
-    window.addEventListener("unhandledrejection", catchAllErrors);
+    // window.addEventListener("unhandledrejection", catchAllErrors);
   }, []);
 
   if (initialized === true) {

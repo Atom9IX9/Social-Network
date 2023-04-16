@@ -139,7 +139,6 @@ const __getErrorsFromMessages = (messages: Array<string>) => {
     errorMessageName =
       errorMessageName[0].toLowerCase() +
       errorMessageName.slice(1, errorMessageName.length);
-    console.log(errorMessageName);
 
     return { ...acc, [errorMessageName]: interfaceMessage };
   }, {});

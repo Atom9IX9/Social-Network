@@ -1,7 +1,8 @@
-import chatReducer, { actions } from "./chatReducer";
+import chatReducer, { actions, initialStateType } from "./chatReducer";
 
-const state = {
+const state: initialStateType = {
   chatMessages: [],
+  chatStatus: "connecting"
 };
 
 describe("chat tests", () => {
