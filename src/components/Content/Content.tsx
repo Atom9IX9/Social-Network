@@ -7,13 +7,16 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "../common/Login/Login";
 import withSuspense from "../../hoc/withSuspense";
 import { Content } from "antd/es/layout/layout";
-import Chat from "../Chat/Chat";
 
+// * lazy
 const MessagesContainer = withSuspense(
   React.lazy<React.ComponentType>(() => import("../Messages/MessagesContainer"))
 );
 const ProfileContainer = withSuspense(
   React.lazy<React.ComponentType>(() => import("../Profile/ProfileContainer"))
+);
+const ChatPage = withSuspense(
+  React.lazy<React.ComponentType>(() => import("../Chat/Chat"))
 );
 
 const ContentC: React.FC<TContentProps> = ({ bg }) => {
@@ -22,7 +25,7 @@ const ContentC: React.FC<TContentProps> = ({ bg }) => {
       style={{
         margin: "24px 16px",
         padding: 24,
-        minHeight: 280,
+        minHeight: 680,
         background: bg,
       }}
     >
@@ -36,7 +39,7 @@ const ContentC: React.FC<TContentProps> = ({ bg }) => {
         <Route path="/messages/*" element={<MessagesContainer />} />
         <Route path="/profile/:userId" element={<ProfileContainer />} />
         <Route path="/profile" element={<ProfileContainer />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat" element={<ChatPage />} />
       </Routes>
     </Content>
   );
@@ -45,5 +48,5 @@ const ContentC: React.FC<TContentProps> = ({ bg }) => {
 export default ContentC;
 
 type TContentProps = {
-  bg: string
+  bg: string;
 };

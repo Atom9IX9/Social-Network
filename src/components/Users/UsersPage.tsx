@@ -42,7 +42,6 @@ const UsersPage: React.FC<UsersPageProps> = () => {
       actualFriend =
         friend === "false" ? false : friend === "true" ? true : null;
 
-    console.log(queryString.parse(location.search));
     dispatch(getUsers(actualPage, pageSize, actualTerm, actualFriend));
   }, []);
 

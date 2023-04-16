@@ -1,21 +1,20 @@
+import { InferActionsTypes } from "./reduxStore";
 let initialState = {
   friends: [
     { name: "Dima", id: 1 },
     { name: "Mom", id: 2 },
     { name: "Danylo", id: 3 },
   ],
-  links: [
-    { path: "/profile", linkName: "Profile", linkId: 1 },
-    { path: "/messages", linkName: "Messages", linkId: 2 },
-    { path: "/news", linkName: "News", linkId: 3 },
-    { path: "/music", linkName: "Music", linkId: 4 },
-    { path: "/settings", linkName: "Settings", linkId: 5 },
-    { path: "/users", linkName: "Users", linkId: 6 },
-  ],
 };
 
-let sidebarReducer = (state = initialState): InitialStateType => {
+let sidebarReducer = (
+  state = initialState,
+  action: SidebarActionsTypes
+): InitialStateType => {
   return state
+};
+
+export const actions = {
 };
 
 export default sidebarReducer;
@@ -27,3 +26,4 @@ export type SidebarLinkType = {
   linkName: string;
   linkId: number;
 };
+export type SidebarActionsTypes = InferActionsTypes<typeof actions>;
