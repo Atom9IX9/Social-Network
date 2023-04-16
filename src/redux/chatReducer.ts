@@ -16,7 +16,9 @@ const chatReducer = (
     case "SET_CHAT_MESSAGES/chatReducer":
       return {
         ...state,
-        chatMessages: [...state.chatMessages, ...action.messages],
+        chatMessages: [...state.chatMessages, ...action.messages].filter(
+          (m, index, arr) => index >= arr.length - 50
+        ),
       };
     case "SET_CHAT_STATUS/chatReducer":
       return {
@@ -58,17 +60,17 @@ let _handleNewStatus: ((status: ChatStatusType) => void) | null = null;
 const handleNewStatusCreator = (dispatch: Dispatch) => {
   if (_handleNewStatus === null) {
     _handleNewStatus = (status) => {
-      dispatch(actions.setChatStatus(status))
-    }
+      dispatch(actions.setChatStatus(status));
+    };
   }
   return _handleNewStatus;
-}
+};
 
 //? thunks
 export const startMessagesListening =
   (): ThunkType<chatReducerActionsTypes, void> => (dispatch) => {
     chatAPI.subscribeMessagesCb(handleNewMessageCreator(dispatch));
-    chatAPI.subscribeStatusCb(handleNewStatusCreator(dispatch))
+    chatAPI.subscribeStatusCb(handleNewStatusCreator(dispatch));
     chatAPI.start();
   };
 export const stopMessagesListening =

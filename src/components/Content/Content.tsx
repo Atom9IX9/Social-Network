@@ -25,7 +25,7 @@ const ContentC: React.FC<TContentProps> = ({ bg }) => {
       style={{
         margin: "24px 16px",
         padding: 24,
-        minHeight: 280,
+        minHeight: 680,
         background: bg,
       }}
     >

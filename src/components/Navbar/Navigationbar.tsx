@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "./Link/Link";
-import logo from "../../assets/img/logo.jpg";
+import logo from "../../assets/img/logo.svg";
 import Sider from "antd/es/layout/Sider";
 import {
   UserOutlined,
@@ -12,20 +12,34 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Navbar: React.FC<TNavbarProps> = ({ collapsed }) => {
+  const location = useLocation();
+  const [currentPage, setCurrentPage] = useState(["1"]);
+  useEffect(() => {
+    let path = location.pathname;
+    if(path === "/profile") setCurrentPage(["1"])
+    else if(path === "/messages") setCurrentPage(["2"])
+    else if(path === "/users") setCurrentPage(["3"])
+    else if(path === "/chat") setCurrentPage(["4"])
+    else if(path === "/news") setCurrentPage(["5"])
+    else if(path === "/music") setCurrentPage(["6"])
+    else if(path === "/settings") setCurrentPage(["7"])
+  }, [location.pathname]);
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
       <div
         className="logo"
         style={{ display: "flex", justifyContent: "space-around" }}
       >
-        <img style={{ width: "40%" }} src={logo} alt="logo" />
+        <img style={{ width: "60%" }} src={logo} alt="logo" />
       </div>
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={["1"]}
+        selectedKeys={currentPage}
         items={[
           {
             key: "1",

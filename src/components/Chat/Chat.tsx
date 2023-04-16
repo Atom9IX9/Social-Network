@@ -1,4 +1,4 @@
-import { Avatar, Card } from "antd";
+import { Avatar, Button, Card } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageType } from "../../api/chatAPI";
@@ -8,6 +8,7 @@ import {
   startMessagesListening,
 } from "../../redux/chatReducer";
 import { rootStateType } from "../../redux/reduxStore";
+import TextArea from "antd/es/input/TextArea";
 
 const ChatPage = React.memo(() => {
   return <Chat />;
@@ -45,18 +46,21 @@ const ChatMessages: React.FC<ChatMessagesProps> = React.memo(() => {
   };
 
   const scrollDown = () => {
-    chatMessagesScrollAnchor.current?.scrollIntoView({ behavior: "smooth" });
-  }
+    chatMessagesScrollAnchor.current?.scrollIntoView({
+      block: "nearest",
+      behavior: "smooth",
+    });
+  };
 
   // * effects
   useEffect(() => {
     dispatch(startMessagesListening());
-    setTimeout(scrollDown, 1000)
+    setTimeout(scrollDown, 1000);
   }, []);
   //? auto scroll
   useEffect(() => {
     if (isAutoScroll) {
-      scrollDown()
+      scrollDown();
     }
   }, [messages]);
 
@@ -86,21 +90,25 @@ const AddChatMessageForm = () => {
 
   return (
     <>
-      <textarea
+      <TextArea
+        style={{ width: "400px", marginTop: "40px", marginRight: "15px" }}
         onChange={(e) => setMessage(e.currentTarget.value)}
         value={message}
-      ></textarea>
-      <button
+        autoSize
+      ></TextArea>
+      <Button
         disabled={chatStatus === "ready" ? false : true}
+        type="primary"
         onClick={sendMessage}
       >
         send
-      </button>
+      </Button>
     </>
   );
 };
 
-const Message: React.FC<MessagePropsType> = ({ message }) => {
+const Message: React.FC<MessagePropsType> = React.memo(({ message }) => {
+  
   return (
     <div style={{ marginTop: "40px" }}>
       <Card
@@ -112,7 +120,7 @@ const Message: React.FC<MessagePropsType> = ({ message }) => {
       </Card>
     </div>
   );
-};
+});
 
 export default React.memo(ChatPage);
 
